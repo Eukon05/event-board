@@ -1,14 +1,16 @@
 package pl.eukon05.eventboard.user.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
 @AllArgsConstructor
+@Getter
+@Setter
 public class User {
     private String id;
-    private UserType type;
-    private final Set<Integer> hostedEventsIDs;
-    private final Set<Integer> participatingEventsIDs;
-    private final Set<Integer> likedEventsIDs;
+
+    Set<User> friends;
 }

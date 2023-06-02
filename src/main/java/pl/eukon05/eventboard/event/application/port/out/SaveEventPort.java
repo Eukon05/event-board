@@ -4,6 +4,6 @@ import pl.eukon05.eventboard.event.domain.Event;
 
 public interface SaveEventPort {
 
-    void saveEvent(Event event);
+    long saveEvent(Event event);
 
 }

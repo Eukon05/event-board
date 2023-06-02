@@ -11,11 +11,26 @@ import java.util.Set;
 @Setter
 public class Event {
     private final Long id;
-    private final String organizerID;
+
+    private String organizerID;
     private String name;
     private String description;
     private Location location;
     private EventType type;
-    private final Set<Integer> guestIDs;
-    private final Set<Integer> inviteeIDs;
+
+    private final Set<String> guestIDs;
+    private final Set<String> inviteeIDs;
+    private final Set<String> likedIDs;
+
+    public int getGuestsCount() {
+        return guestIDs.size();
+    }
+
+    public int getInviteesCount() {
+        return inviteeIDs.size();
+    }
+
+    public int getLikesCount() {
+        return likedIDs.size();
+    }
 }

@@ -19,7 +19,7 @@ class EventEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     private String organizerID;
     private String name;
@@ -32,8 +32,11 @@ class EventEntity {
     private EventType type;
 
     @ElementCollection
-    private Set<Integer> guestIDs;
+    private Set<String> guestIDs;
 
     @ElementCollection
-    private Set<Integer> inviteeIDs;
+    private Set<String> inviteeIDs;
+
+    @ElementCollection
+    private Set<String> likedIDs;
 }

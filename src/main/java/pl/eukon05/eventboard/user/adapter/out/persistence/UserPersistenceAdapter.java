@@ -1,14 +1,14 @@
 package pl.eukon05.eventboard.user.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import pl.eukon05.eventboard.common.Adapter;
 import pl.eukon05.eventboard.user.application.port.out.GetUserPort;
 import pl.eukon05.eventboard.user.application.port.out.SaveUserPort;
 import pl.eukon05.eventboard.user.domain.User;
 
 import java.util.Optional;
 
-@Component
+@Adapter
 @RequiredArgsConstructor
 class UserPersistenceAdapter implements GetUserPort, SaveUserPort {
 
