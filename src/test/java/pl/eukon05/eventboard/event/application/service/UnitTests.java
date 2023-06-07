@@ -9,10 +9,10 @@ import pl.eukon05.eventboard.event.domain.Event;
 import pl.eukon05.eventboard.event.domain.EventType;
 import pl.eukon05.eventboard.event.domain.Location;
 
+import java.util.HashSet;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 class UnitTests {
@@ -23,10 +23,11 @@ class UnitTests {
     private final PublishEventUseCase publishEventUseCase = new PublishEventUseCase(saveEventPort, getEventPort);
     private final ModifyEventUseCase modifyEventUseCase = new ModifyEventUseCase(saveEventPort, getEventPort);
     private final DeleteEventUseCase deleteEventUseCase = new DeleteEventUseCase(getEventPort, deleteEventPort);
+    private final AttendEventUseCase attendEventUseCase = new AttendEventUseCase(getEventPort, saveEventPort);
     private final String userID = "someid";
 
     private Event createTestEvent() {
-        return new Event(1L, "", "name", "desc", new Location("sas", "sas", "sas"), null, null, null, null);
+        return new Event(1L, "", "name", "desc", new Location("sas", "sas", "sas"), EventType.PUBLIC, new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
     @Test
@@ -104,9 +105,39 @@ class UnitTests {
     @Test
     void should_not_delete_event() {
         Event event = createTestEvent();
-
         Mockito.when(getEventPort.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
 
         assertFalse(deleteEventUseCase.execute(userID, 1L));
+    }
+
+    @Test
+    void should_attend_event() {
+        Event event = createTestEvent();
+        Mockito.when(getEventPort.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
+
+        attendEventUseCase.execute(userID, event.getId());
+        verify(getEventPort).getEventById(1L);
+        verify(saveEventPort).saveEvent(event);
+
+        assertTrue(event.getGuestIDs().contains(userID));
+    }
+
+    @Test
+    void should_not_attend_private_event() {
+        Event event = createTestEvent();
+        event.setType(EventType.PRIVATE);
+        Mockito.when(getEventPort.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
+
+        assertFalse(attendEventUseCase.execute(userID, event.getId()));
+    }
+
+    @Test
+    void should_attend_invited_event() {
+        Event event = createTestEvent();
+        event.setType(EventType.PRIVATE);
+        event.getInviteeIDs().add(userID);
+        Mockito.when(getEventPort.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
+
+        assertTrue(attendEventUseCase.execute(userID, event.getId()));
     }
 }

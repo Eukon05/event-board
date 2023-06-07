@@ -59,6 +59,12 @@ class UnitTests {
     }
 
     @Test
+    void should_not_befriend_self() {
+        String id = "someid";
+        assertFalse(befriendUserUseCase.execute(id, id));
+    }
+
+    @Test
     void should_defriend_user() {
         User one = createUserOne();
         User two = createUserTwo();

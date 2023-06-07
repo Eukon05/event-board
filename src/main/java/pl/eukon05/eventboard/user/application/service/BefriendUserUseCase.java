@@ -16,6 +16,9 @@ class BefriendUserUseCase {
     private final SaveUserPort saveUserPort;
 
     boolean execute(String selfID, String friendID) {
+        if (selfID.equals(friendID))
+            return false;
+
         Optional<User> selfOptional = getUserPort.getUserById(selfID);
         Optional<User> friendOptional = getUserPort.getUserById(friendID);
 
