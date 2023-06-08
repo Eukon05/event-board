@@ -2,6 +2,7 @@ package pl.eukon05.eventboard.event.application.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.eukon05.eventboard.event.application.port.in.GetUserFriendlistPort;
 import pl.eukon05.eventboard.event.application.port.out.DeleteEventPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
@@ -10,6 +11,7 @@ import pl.eukon05.eventboard.event.domain.EventType;
 import pl.eukon05.eventboard.event.domain.Location;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,12 +20,14 @@ import static org.mockito.Mockito.verify;
 class UnitTests {
     private final SaveEventPort saveEventPort = Mockito.mock(SaveEventPort.class);
     private final GetEventPort getEventPort = Mockito.mock(GetEventPort.class);
+    private final GetUserFriendlistPort getUserFriendlistPort = Mockito.mock(GetUserFriendlistPort.class);
     private final DeleteEventPort deleteEventPort = Mockito.mock(DeleteEventPort.class);
     private final CreateEventUseCase createEventUseCase = new CreateEventUseCase(saveEventPort);
     private final PublishEventUseCase publishEventUseCase = new PublishEventUseCase(saveEventPort, getEventPort);
     private final ModifyEventUseCase modifyEventUseCase = new ModifyEventUseCase(saveEventPort, getEventPort);
     private final DeleteEventUseCase deleteEventUseCase = new DeleteEventUseCase(getEventPort, deleteEventPort);
     private final AttendEventUseCase attendEventUseCase = new AttendEventUseCase(getEventPort, saveEventPort);
+    private final InviteToEventUseCase inviteToEventUseCase = new InviteToEventUseCase(getUserFriendlistPort, getEventPort, saveEventPort);
     private final String userID = "someid";
 
     private Event createTestEvent() {
@@ -139,5 +143,39 @@ class UnitTests {
         Mockito.when(getEventPort.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
 
         assertTrue(attendEventUseCase.execute(userID, event.getId()));
+    }
+
+    @Test
+    void should_invite_to_public_event() {
+        Event event = createTestEvent();
+        String friendID = "somerandomid";
+        Mockito.when(getEventPort.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
+        Mockito.when(getUserFriendlistPort.getUserFriendlist(Mockito.anyString())).thenReturn(List.of(friendID));
+
+        assertTrue(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertTrue(event.getInviteeIDs().contains(friendID));
+        verify(getUserFriendlistPort).getUserFriendlist(userID);
+        verify(getEventPort).getEventById(event.getId());
+        verify(saveEventPort).saveEvent(event);
+    }
+
+    @Test
+    void should_invite_to_private_event() {
+        Event event = createTestEvent();
+
+        event.setType(EventType.PRIVATE);
+        event.setOrganizerID(userID);
+
+        String friendID = "somerandomid";
+        Mockito.when(getEventPort.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
+        Mockito.when(getUserFriendlistPort.getUserFriendlist(Mockito.anyString())).thenReturn(List.of(friendID));
+
+        assertTrue(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+
+        event.setOrganizerID("");
+        event.getInviteeIDs().remove(friendID);
+        event.getGuestIDs().add(userID);
+
+        assertTrue(inviteToEventUseCase.execute(userID, friendID, event.getId()));
     }
 }
