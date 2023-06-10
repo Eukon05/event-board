@@ -5,7 +5,6 @@ import pl.eukon05.eventboard.common.UseCase;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
 import pl.eukon05.eventboard.event.domain.Event;
-import pl.eukon05.eventboard.event.domain.EventType;
 
 import java.util.Optional;
 
@@ -22,16 +21,10 @@ class AttendEventUseCase {
 
         Event event = eventOptional.get();
 
-        if (event.getGuestIDs().contains(userID)) return false;
+        boolean result = event.attend(userID);
 
-        if (event.getType().equals(EventType.PRIVATE) && !event.getInviteeIDs().contains(userID)) return false;
+        if (result) saveEventPort.saveEvent(event);
 
-        event.getGuestIDs().add(userID);
-        event.getInviteeIDs().remove(userID);
-
-        saveEventPort.saveEvent(event);
-
-        return true;
+        return result;
     }
-
 }

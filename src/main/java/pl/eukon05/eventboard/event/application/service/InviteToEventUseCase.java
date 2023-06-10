@@ -2,19 +2,17 @@ package pl.eukon05.eventboard.event.application.service;
 
 import lombok.RequiredArgsConstructor;
 import pl.eukon05.eventboard.common.UseCase;
-import pl.eukon05.eventboard.event.application.port.in.GetUserFriendlistPort;
+import pl.eukon05.eventboard.event.application.port.out.CheckIfFriendsPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
 import pl.eukon05.eventboard.event.domain.Event;
-import pl.eukon05.eventboard.event.domain.EventType;
 
-import java.util.List;
 import java.util.Optional;
 
 @UseCase
 @RequiredArgsConstructor
 class InviteToEventUseCase {
-    private final GetUserFriendlistPort getUserFriendlistPort;
+    private final CheckIfFriendsPort checkIfFriendsPort;
     private final GetEventPort getEventPort;
     private final SaveEventPort saveEventPort;
 
@@ -25,19 +23,14 @@ class InviteToEventUseCase {
 
         Event event = eventOptional.get();
 
-        List<String> friendlist = getUserFriendlistPort.getUserFriendlist(selfID);
+        if (!checkIfFriendsPort.checkIfFriends(selfID, friendID)) return false;
 
-        if (!friendlist.contains(friendID)) return false;
+        boolean result = event.invite(selfID, friendID);
 
-        if (event.getGuestIDs().contains(friendID) || event.getInviteeIDs().contains(friendID)) return false;
+        if (result)
+            saveEventPort.saveEvent(event);
 
-        if (event.getType().equals(EventType.PRIVATE) && !event.getGuestIDs().contains(selfID) && !event.getOrganizerID().equals(selfID))
-            return false;
-
-        event.getInviteeIDs().add(friendID);
-        saveEventPort.saveEvent(event);
-
-        return true;
+        return result;
     }
 
 }
