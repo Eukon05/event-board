@@ -36,11 +36,24 @@ class InviteToEventUnitTests {
     }
 
     @Test
-    void should_invite_to_private_event() {
+    void should_invite_to_private_hosted_event() {
         Event event = createTestPublicEvent();
 
         event.setType(EventType.PRIVATE);
         event.setOrganizerID(userID);
+
+        gettingEventWillReturn(getEventPort, event);
+        checkingFriendsWillReturn(true);
+
+        assertTrue(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+    }
+
+    @Test
+    void should_invite_to_private_attended_event() {
+        Event event = createTestPublicEvent();
+
+        event.setType(EventType.PRIVATE);
+        event.getGuestIDs().add(userID);
 
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
