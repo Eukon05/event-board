@@ -33,4 +33,26 @@ public class Event {
     public int getLikesCount() {
         return likedIDs.size();
     }
+
+    public boolean attend(String userID) {
+        if (guestIDs.contains(userID)) return false;
+
+        if (type.equals(EventType.PRIVATE) && !inviteeIDs.contains(userID)) return false;
+
+        guestIDs.add(userID);
+        inviteeIDs.remove(userID);
+
+        return true;
+    }
+
+    public boolean invite(String inviterID, String inviteeID) {
+        if (guestIDs.contains(inviteeID) || inviteeIDs.contains(inviteeID)) return false;
+
+        if (type.equals(EventType.PRIVATE) && !guestIDs.contains(inviterID) && !organizerID.equals(inviterID))
+            return false;
+
+        inviteeIDs.add(inviteeID);
+
+        return true;
+    }
 }
