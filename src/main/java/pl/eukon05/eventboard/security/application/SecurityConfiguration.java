@@ -1,4 +1,4 @@
-package pl.eukon05.eventboard.security;
+package pl.eukon05.eventboard.security.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

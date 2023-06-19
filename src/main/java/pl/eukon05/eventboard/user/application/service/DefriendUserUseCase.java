@@ -2,6 +2,7 @@ package pl.eukon05.eventboard.user.application.service;
 
 import lombok.RequiredArgsConstructor;
 import pl.eukon05.eventboard.common.UseCase;
+import pl.eukon05.eventboard.user.application.port.in.CheckIfFriendsPort;
 import pl.eukon05.eventboard.user.application.port.out.GetUserPort;
 import pl.eukon05.eventboard.user.application.port.out.SaveUserPort;
 import pl.eukon05.eventboard.user.domain.User;
@@ -14,6 +15,7 @@ class DefriendUserUseCase {
 
     private final GetUserPort getUserPort;
     private final SaveUserPort saveUserPort;
+    private final CheckIfFriendsPort checkIfFriendsPort;
 
     boolean execute(String selfID, String friendID) {
         Optional<User> selfOptional = getUserPort.getUserById(selfID);
@@ -25,7 +27,7 @@ class DefriendUserUseCase {
         User self = selfOptional.get();
         User friend = friendOptional.get();
 
-        if (!self.getFriends().contains(friend) || !friend.getFriends().contains(self))
+        if (!checkIfFriendsPort.checkIfFriends(self, friend))
             return false;
 
         self.getFriends().remove(friend);

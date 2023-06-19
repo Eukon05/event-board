@@ -1,7 +1,7 @@
 # Event Board
 - Project start: 30.05.2023
-- Project goal: Improve my ability to write clean and maintainable code, by utilising "hexagonal architecture" and TDD  
-- Additional goals: Learn Gradle and Spring Modulith
+- Project goal: Improve my ability to write clean and maintainable code, by utilising "hexagonal architecture" and TDD
+- Additional goals: Learn Gradle
 
 ## Planned features
 - [ ] Ability for organisations to create and manage event announcements

@@ -1,4 +1,4 @@
-package pl.eukon05.eventboard.security;
+package pl.eukon05.eventboard.security.application;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.eukon05.eventboard.user.application.port.out.CreateUserPort;
+import pl.eukon05.eventboard.security.application.port.out.CreateUserPort;
 
 import java.io.IOException;
 import java.security.Principal;
