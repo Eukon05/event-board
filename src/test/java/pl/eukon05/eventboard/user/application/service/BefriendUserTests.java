@@ -2,6 +2,7 @@ package pl.eukon05.eventboard.user.application.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.eukon05.eventboard.user.application.port.in.CheckIfFriendsPort;
 import pl.eukon05.eventboard.user.application.port.out.GetUserPort;
 import pl.eukon05.eventboard.user.application.port.out.SaveUserPort;
 import pl.eukon05.eventboard.user.domain.User;
@@ -16,7 +17,8 @@ import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
 class BefriendUserTests {
     private final SaveUserPort saveUserPort = Mockito.mock(SaveUserPort.class);
     private final GetUserPort getUserPort = Mockito.mock(GetUserPort.class);
-    private final BefriendUserUseCase befriendUserUseCase = new BefriendUserUseCase(getUserPort, saveUserPort);
+    private final CheckIfFriendsPort checkIfFriendsPort = Mockito.mock(CheckIfFriendsPort.class);
+    private final BefriendUserUseCase befriendUserUseCase = new BefriendUserUseCase(getUserPort, saveUserPort, checkIfFriendsPort);
 
     @Test
     void should_befriend_user() {
@@ -25,6 +27,8 @@ class BefriendUserTests {
 
         gettingUserByIdWillReturn(getUserPort, one.getId(), one);
         gettingUserByIdWillReturn(getUserPort, two.getId(), two);
+
+        checkingFriendsWillReturn(one, two, false);
 
         assertTrue(befriendUserUseCase.execute(one.getId(), two.getId()));
         verify(saveUserPort).saveUser(one);
@@ -39,8 +43,7 @@ class BefriendUserTests {
         User one = createUserOne();
         User two = createUserTwo();
 
-        one.getFriends().add(two);
-        two.getFriends().add(one);
+        checkingFriendsWillReturn(one, two, true);
 
         gettingUserByIdWillReturn(getUserPort, one.getId(), one);
         gettingUserByIdWillReturn(getUserPort, two.getId(), two);
@@ -52,6 +55,10 @@ class BefriendUserTests {
     void should_not_befriend_self() {
         String id = "someid";
         assertFalse(befriendUserUseCase.execute(id, id));
+    }
+
+    private void checkingFriendsWillReturn(User one, User two, boolean value) {
+        Mockito.when(checkIfFriendsPort.checkIfFriends(one, two)).thenReturn(value);
     }
 
 }

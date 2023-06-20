@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -17,6 +18,9 @@ public class Event {
     private String description;
     private Location location;
     private EventType type;
+
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private final Set<String> guestIDs;
     private final Set<String> inviteeIDs;

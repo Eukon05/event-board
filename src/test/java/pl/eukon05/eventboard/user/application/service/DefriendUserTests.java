@@ -2,6 +2,7 @@ package pl.eukon05.eventboard.user.application.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.eukon05.eventboard.user.application.port.in.CheckIfFriendsPort;
 import pl.eukon05.eventboard.user.application.port.out.GetUserPort;
 import pl.eukon05.eventboard.user.application.port.out.SaveUserPort;
 import pl.eukon05.eventboard.user.domain.User;
@@ -16,15 +17,15 @@ import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
 class DefriendUserTests {
     private final SaveUserPort saveUserPort = Mockito.mock(SaveUserPort.class);
     private final GetUserPort getUserPort = Mockito.mock(GetUserPort.class);
-    private final DefriendUserUseCase defriendUserUseCase = new DefriendUserUseCase(getUserPort, saveUserPort);
+    private final CheckIfFriendsPort checkIfFriendsPort = Mockito.mock(CheckIfFriendsPort.class);
+    private final DefriendUserUseCase defriendUserUseCase = new DefriendUserUseCase(getUserPort, saveUserPort, checkIfFriendsPort);
 
     @Test
     void should_defriend_user() {
         User one = createUserOne();
         User two = createUserTwo();
 
-        one.getFriends().add(two);
-        two.getFriends().add(one);
+        Mockito.when(checkIfFriendsPort.checkIfFriends(one, two)).thenReturn(true);
 
         gettingUserByIdWillReturn(getUserPort, one.getId(), one);
         gettingUserByIdWillReturn(getUserPort, two.getId(), two);
@@ -41,6 +42,8 @@ class DefriendUserTests {
     void should_not_defriend_user() {
         User one = createUserOne();
         User two = createUserTwo();
+
+        Mockito.when(checkIfFriendsPort.checkIfFriends(one, two)).thenReturn(false);
 
         gettingUserByIdWillReturn(getUserPort, one.getId(), one);
         gettingUserByIdWillReturn(getUserPort, two.getId(), two);

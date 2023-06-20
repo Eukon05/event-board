@@ -12,6 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 class LocationEntity {
+    private String country;
+    private String city;
     private String street;
     private String apartment;
     private String postalCode;

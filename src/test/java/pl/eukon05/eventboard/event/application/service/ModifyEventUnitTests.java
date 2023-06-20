@@ -18,7 +18,7 @@ class ModifyEventUnitTests {
     private final SaveEventPort saveEventPort = Mockito.mock(SaveEventPort.class);
     private final GetEventPort getEventPort = Mockito.mock(GetEventPort.class);
     private final ModifyEventUseCase modifyEventUseCase = new ModifyEventUseCase(saveEventPort, getEventPort);
-    private final ModifyEventCommand command = new ModifyEventCommand(Optional.of("NEWNAME"), Optional.of("NEW_DESC"), Optional.of(new Location("somestr", "21e", "00-000")));
+    private final ModifyEventCommand command = new ModifyEventCommand(Optional.of("NEWNAME"), Optional.of("NEW_DESC"), Optional.of(new Location("somecountry", "somecity", "somestr", "21e", "00-000")));
 
     @Test
     void should_modify_event() {

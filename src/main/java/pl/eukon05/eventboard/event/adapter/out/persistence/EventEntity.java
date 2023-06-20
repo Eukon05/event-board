@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.eukon05.eventboard.event.domain.EventType;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,9 @@ class EventEntity {
 
     @Embedded
     private LocationEntity location;
+
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
     private EventType type;
