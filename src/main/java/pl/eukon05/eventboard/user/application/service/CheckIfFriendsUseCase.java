@@ -13,7 +13,6 @@ import java.util.Optional;
 class CheckIfFriendsUseCase implements CheckIfFriendsPort {
     private final GetUserPort getUserPort;
 
-    @Override
     public boolean checkIfFriends(String userOne, String userTwo) {
         Optional<User> userOptional = getUserPort.getUserById(userOne);
 
@@ -21,12 +20,11 @@ class CheckIfFriendsUseCase implements CheckIfFriendsPort {
 
         User user = userOptional.get();
 
-        return user.getFriends().stream().map(User::getId).toList().contains(userTwo);
+        return user.friendIDs().contains(userTwo);
     }
 
-    @Override
     public boolean checkIfFriends(User userOne, User userTwo) {
-        return userOne.getFriends().contains(userTwo) && userTwo.getFriends().contains(userOne);
+        return userOne.friendIDs().contains(userTwo.id());
     }
 
 }

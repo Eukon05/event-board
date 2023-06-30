@@ -2,6 +2,7 @@ package pl.eukon05.eventboard.event.application.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.event.application.port.out.CheckIfFriendsPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
@@ -10,8 +11,7 @@ import pl.eukon05.eventboard.event.domain.EventType;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.*;
 
@@ -27,7 +27,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertTrue(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.SUCCESS, inviteToEventUseCase.execute(userID, friendID, event.getId()));
         assertThat(event.getInviteeIDs(), contains(friendID));
 
         verify(checkIfFriendsPort).checkIfFriends(userID, friendID);
@@ -45,7 +45,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertTrue(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.SUCCESS, inviteToEventUseCase.execute(userID, friendID, event.getId()));
     }
 
     @Test
@@ -58,7 +58,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertTrue(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.SUCCESS, inviteToEventUseCase.execute(userID, friendID, event.getId()));
     }
 
     @Test
@@ -68,7 +68,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(false);
 
-        assertFalse(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.USER_NOT_FRIEND, inviteToEventUseCase.execute(userID, friendID, event.getId()));
     }
 
     @Test
@@ -80,7 +80,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertFalse(inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.EVENT_PRIVATE, inviteToEventUseCase.execute(userID, friendID, event.getId()));
     }
 
     private void checkingFriendsWillReturn(boolean value) {

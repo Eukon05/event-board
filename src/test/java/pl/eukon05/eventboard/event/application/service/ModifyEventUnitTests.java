@@ -2,6 +2,7 @@ package pl.eukon05.eventboard.event.application.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
 import pl.eukon05.eventboard.event.domain.Event;
@@ -10,7 +11,6 @@ import pl.eukon05.eventboard.event.domain.Location;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.*;
 
@@ -42,7 +42,7 @@ class ModifyEventUnitTests {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        assertFalse(modifyEventUseCase.execute(userID, 1L, command));
+        assertEquals(Result.NOT_ORGANIZER, modifyEventUseCase.execute(userID, 1L, command));
     }
 
 }

@@ -1,22 +1,21 @@
 package pl.eukon05.eventboard.user.adapter.out.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "AppUser")
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 class UserEntity {
     @Id
-    String id;
+    private String id;
 
-    @ManyToMany
-    Set<UserEntity> friends;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> friendIDs;
 }

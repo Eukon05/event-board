@@ -1,9 +1,12 @@
 package pl.eukon05.eventboard.security.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +14,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.util.Collection;
 import java.util.Map;
@@ -20,22 +22,26 @@ import java.util.stream.Collectors;
 @Configuration
 @RequiredArgsConstructor
 class SecurityConfiguration {
-    private final UserRegistrationFilter filter;
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.logout(l -> l.invalidateHttpSession(true).clearAuthentication(true).permitAll());
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> {
-            //future endpoints here
+            auth.requestMatchers("/user").authenticated();
+            auth.requestMatchers("/event").authenticated();
+            auth.anyRequest().permitAll();
         });
 
         http.oauth2ResourceServer(o -> o.jwt(j -> j.jwtAuthenticationConverter(keycloakJwtAuthenticationConverter())));
 
-        http.addFilterAfter(filter, OncePerRequestFilter.class);
-
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationEventPublisher authenticationEventPublisher
+            (ApplicationEventPublisher applicationEventPublisher) {
+        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
 
 
@@ -53,6 +59,5 @@ class SecurityConfiguration {
 
         return jwtAuthenticationConverter;
     }
-
 
 }

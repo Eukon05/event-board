@@ -2,6 +2,7 @@ package pl.eukon05.eventboard.user.application.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.user.application.port.in.CheckIfFriendsPort;
 import pl.eukon05.eventboard.user.application.port.out.GetUserPort;
 import pl.eukon05.eventboard.user.application.port.out.SaveUserPort;
@@ -9,8 +10,7 @@ import pl.eukon05.eventboard.user.domain.User;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
 
@@ -27,15 +27,15 @@ class DefriendUserTests {
 
         Mockito.when(checkIfFriendsPort.checkIfFriends(one, two)).thenReturn(true);
 
-        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
-        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
+        gettingUserByIdWillReturn(getUserPort, one.id(), one);
+        gettingUserByIdWillReturn(getUserPort, two.id(), two);
 
-        assertTrue(defriendUserUseCase.execute(one.getId(), two.getId()));
+        assertEquals(Result.SUCCESS, defriendUserUseCase.execute(one.id(), two.id()));
         verify(saveUserPort).saveUser(one);
         verify(saveUserPort).saveUser(two);
 
-        assertThat(one.getFriends(), empty());
-        assertThat(two.getFriends(), empty());
+        assertThat(one.friendIDs(), empty());
+        assertThat(two.friendIDs(), empty());
     }
 
     @Test
@@ -45,9 +45,9 @@ class DefriendUserTests {
 
         Mockito.when(checkIfFriendsPort.checkIfFriends(one, two)).thenReturn(false);
 
-        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
-        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
+        gettingUserByIdWillReturn(getUserPort, one.id(), one);
+        gettingUserByIdWillReturn(getUserPort, two.id(), two);
 
-        assertFalse(defriendUserUseCase.execute(one.getId(), two.getId()));
+        assertEquals(Result.USER_NOT_FRIEND, defriendUserUseCase.execute(one.id(), two.id()));
     }
 }

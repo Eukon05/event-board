@@ -2,11 +2,12 @@ package pl.eukon05.eventboard.event.application.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.event.application.port.out.DeleteEventPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.domain.Event;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.*;
 
@@ -32,6 +33,6 @@ class DeleteEventUnitTests {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        assertFalse(deleteEventUseCase.execute(userID, 1L));
+        assertEquals(Result.NOT_ORGANIZER, deleteEventUseCase.execute(userID, 1L));
     }
 }
