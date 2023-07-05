@@ -27,18 +27,6 @@ public class Event {
     private final Set<String> inviteeIDs;
     private final Set<String> likedIDs;
 
-    public int getGuestsCount() {
-        return guestIDs.size();
-    }
-
-    public int getInviteesCount() {
-        return inviteeIDs.size();
-    }
-
-    public int getLikesCount() {
-        return likedIDs.size();
-    }
-
     public Result attend(String userID) {
         if (guestIDs.contains(userID)) return Result.ALREADY_ATTENDEE;
 

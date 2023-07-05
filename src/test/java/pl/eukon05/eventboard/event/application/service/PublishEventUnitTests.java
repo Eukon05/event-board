@@ -21,12 +21,15 @@ class PublishEventUnitTests {
     void should_publish_event() {
         Event event = createTestPublicEvent();
         event.setOrganizerID(userID);
+        event.setType(EventType.PRIVATE);
         gettingEventWillReturn(getEventPort, event);
 
-        publishEventUseCase.execute(userID, 1L);
+        Result result = publishEventUseCase.execute(userID, 1L);
+
+        assertEquals(Result.SUCCESS, result);
         verify(getEventPort).getEventById(1L);
-        assertEquals(EventType.PUBLIC, event.getType());
         verify(saveEventPort).saveEvent(event);
+        assertEquals(EventType.PUBLIC, event.getType());
     }
 
     @Test

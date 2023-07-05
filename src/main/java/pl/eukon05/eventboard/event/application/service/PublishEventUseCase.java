@@ -27,6 +27,9 @@ class PublishEventUseCase {
         if (!event.getOrganizerID().equals(userID))
             return Result.NOT_ORGANIZER;
 
+        if (event.getType().equals(EventType.PUBLIC))
+            return Result.EVENT_ALREADY_PUBLIC;
+
         event.setType(EventType.PUBLIC);
         saveEventPort.saveEvent(event);
 
