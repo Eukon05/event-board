@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.eukon05.eventboard.common.Result;
+import pl.eukon05.eventboard.common.ResultWrapper;
 import pl.eukon05.eventboard.event.application.port.in.command.CreateEventCommand;
 import pl.eukon05.eventboard.event.application.port.in.command.ModifyEventCommand;
 import pl.eukon05.eventboard.event.application.port.out.dto.EventDTO;
@@ -63,6 +64,12 @@ class EventController {
     ResponseEntity<Page<EventDTO>> search(@ParameterObject Pageable pageable, @RequestParam(required = false) Map<String, String> params) {
         Page<EventDTO> page = facade.searchForEvent(params, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<Object> getEvent(Principal principal, @PathVariable long id) {
+        ResultWrapper wrapper = facade.getEvent(principal.getName(), id);
+        return ResponseEntity.status(wrapper.getResult().getStatus()).body(wrapper.getContent());
     }
 
 }
