@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.event.application.port.in.command.CreateEventCommand;
 import pl.eukon05.eventboard.event.application.port.in.command.ModifyEventCommand;
-import pl.eukon05.eventboard.event.domain.Event;
+import pl.eukon05.eventboard.event.application.port.out.dto.EventDTO;
+import pl.eukon05.eventboard.event.application.port.out.dto.EventDTOMapper;
 
 import java.util.Map;
 
@@ -21,6 +22,8 @@ public class EventFacade {
     private final ModifyEventUseCase modifyEventUseCase;
     private final PublishEventUseCase publishEventUseCase;
     private final SearchForEventUseCase searchForEventUseCase;
+
+    private final EventDTOMapper dtoMapper;
 
     public Result createEvent(String userID, CreateEventCommand command) {
         return createEventUseCase.execute(userID, command);
@@ -42,9 +45,8 @@ public class EventFacade {
         return deleteEventUseCase.execute(userID, eventID);
     }
 
-    //todo THIS CANNOT RETURN THE DOMAIN OBJECT, PLEASE CREATE A DTO TO HOLD THE EVENT DATA
-    public Page<Event> searchForEvent(Map<String, String> parameters, Pageable pageable) {
-        return searchForEventUseCase.execute(parameters, pageable);
+    public Page<EventDTO> searchForEvent(Map<String, String> parameters, Pageable pageable) {
+        return searchForEventUseCase.execute(parameters, pageable).map(dtoMapper::mapDomainToDTO);
     }
 
     public Result modifyEvent(String userID, long eventID, ModifyEventCommand command) {
