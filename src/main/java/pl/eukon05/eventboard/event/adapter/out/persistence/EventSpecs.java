@@ -1,6 +1,7 @@
 package pl.eukon05.eventboard.event.adapter.out.persistence;
 
 import org.springframework.data.jpa.domain.Specification;
+import pl.eukon05.eventboard.event.domain.EventType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,10 @@ import java.util.Map;
 final class EventSpecs {
 
     private EventSpecs() {
+    }
+
+    private static Specification<EventEntity> isPublic() {
+        return (root, query, cb) -> cb.equal(root.get(EventEntity_.TYPE), EventType.PUBLIC);
     }
 
     private static Specification<EventEntity> hostedBy(String authorID) {
@@ -37,6 +42,8 @@ final class EventSpecs {
 
     static Specification<EventEntity> build(Map<String, String> parameters) {
         final List<Specification<EventEntity>> specs = new ArrayList<>();
+
+        specs.add(isPublic());
 
         if (parameters.containsKey(EventEntity_.ORGANIZER_ID))
             specs.add(hostedBy(parameters.get(EventEntity_.ORGANIZER_ID)));

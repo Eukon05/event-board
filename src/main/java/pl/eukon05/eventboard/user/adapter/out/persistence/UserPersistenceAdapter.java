@@ -22,6 +22,7 @@ class UserPersistenceAdapter implements GetUserPort, SaveUserPort {
 
     @Override
     public void saveUser(User user) {
-        repository.save(mapper.mapDomainToEntity(user));
+        UserEntity entity = mapper.mapDomainToEntity(user);
+        repository.save(entity);
     }
 }

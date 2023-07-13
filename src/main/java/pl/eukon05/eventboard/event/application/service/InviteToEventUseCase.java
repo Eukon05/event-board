@@ -1,6 +1,7 @@
 package pl.eukon05.eventboard.event.application.service;
 
 import lombok.RequiredArgsConstructor;
+import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.UseCase;
 import pl.eukon05.eventboard.event.application.port.out.CheckIfFriendsPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
@@ -16,18 +17,18 @@ class InviteToEventUseCase {
     private final GetEventPort getEventPort;
     private final SaveEventPort saveEventPort;
 
-    boolean execute(String selfID, String friendID, long eventID) {
+    Result execute(String selfID, String friendID, long eventID) {
         Optional<Event> eventOptional = getEventPort.getEventById(eventID);
 
-        if (eventOptional.isEmpty()) return false;
+        if (eventOptional.isEmpty()) return Result.EVENT_NOT_FOUND;
 
         Event event = eventOptional.get();
 
-        if (!checkIfFriendsPort.checkIfFriends(selfID, friendID)) return false;
+        if (!checkIfFriendsPort.checkIfFriends(selfID, friendID)) return Result.USER_NOT_FRIEND;
 
-        boolean result = event.invite(selfID, friendID);
+        Result result = event.invite(selfID, friendID);
 
-        if (result)
+        if (result.equals(Result.SUCCESS))
             saveEventPort.saveEvent(event);
 
         return result;

@@ -15,9 +15,10 @@ class CreateUserUseCase implements CreateUserPort {
     private final GetUserPort getUserPort;
     private final SaveUserPort saveUserPort;
 
-    @Override
     public void createUser(String id) {
-        if (getUserPort.getUserById(id).isEmpty())
-            saveUserPort.saveUser(new User(id, Collections.emptySet()));
+        if (getUserPort.getUserById(id).isEmpty()) {
+            User user = new User(id, Collections.emptySet());
+            saveUserPort.saveUser(user);
+        }
     }
 }

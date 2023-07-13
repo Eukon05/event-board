@@ -3,6 +3,7 @@ package pl.eukon05.eventboard.event.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import pl.eukon05.eventboard.common.Result;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -26,37 +27,29 @@ public class Event {
     private final Set<String> inviteeIDs;
     private final Set<String> likedIDs;
 
-    public int getGuestsCount() {
-        return guestIDs.size();
-    }
+    public Result attend(String userID) {
+        if (guestIDs.contains(userID)) return Result.ALREADY_ATTENDEE;
 
-    public int getInviteesCount() {
-        return inviteeIDs.size();
-    }
-
-    public int getLikesCount() {
-        return likedIDs.size();
-    }
-
-    public boolean attend(String userID) {
-        if (guestIDs.contains(userID)) return false;
-
-        if (type.equals(EventType.PRIVATE) && !inviteeIDs.contains(userID)) return false;
+        if (type.equals(EventType.PRIVATE) && !inviteeIDs.contains(userID)) return Result.EVENT_PRIVATE;
 
         guestIDs.add(userID);
         inviteeIDs.remove(userID);
 
-        return true;
+        return Result.SUCCESS;
     }
 
-    public boolean invite(String inviterID, String inviteeID) {
-        if (guestIDs.contains(inviteeID) || inviteeIDs.contains(inviteeID)) return false;
+    public Result invite(String inviterID, String inviteeID) {
+        if (guestIDs.contains(inviteeID))
+            return Result.ALREADY_ATTENDEE;
+
+        else if (inviteeIDs.contains(inviteeID))
+            return Result.ALREADY_INVITEE;
 
         if (type.equals(EventType.PRIVATE) && !guestIDs.contains(inviterID) && !organizerID.equals(inviterID))
-            return false;
+            return Result.EVENT_PRIVATE;
 
         inviteeIDs.add(inviteeID);
 
-        return true;
+        return Result.SUCCESS;
     }
 }
