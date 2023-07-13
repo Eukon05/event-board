@@ -5,10 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.eukon05.eventboard.common.Result;
+import pl.eukon05.eventboard.common.ResultWrapper;
 import pl.eukon05.eventboard.event.application.port.in.command.CreateEventCommand;
 import pl.eukon05.eventboard.event.application.port.in.command.ModifyEventCommand;
 import pl.eukon05.eventboard.event.application.port.out.dto.EventDTO;
-import pl.eukon05.eventboard.event.application.port.out.dto.EventDTOMapper;
 
 import java.util.Map;
 
@@ -22,8 +22,8 @@ public class EventFacade {
     private final ModifyEventUseCase modifyEventUseCase;
     private final PublishEventUseCase publishEventUseCase;
     private final SearchForEventUseCase searchForEventUseCase;
+    private final GetEventUseCase getEventUseCase;
 
-    private final EventDTOMapper dtoMapper;
 
     public Result createEvent(String userID, CreateEventCommand command) {
         return createEventUseCase.execute(userID, command);
@@ -46,11 +46,15 @@ public class EventFacade {
     }
 
     public Page<EventDTO> searchForEvent(Map<String, String> parameters, Pageable pageable) {
-        return searchForEventUseCase.execute(parameters, pageable).map(dtoMapper::mapDomainToDTO);
+        return searchForEventUseCase.execute(parameters, pageable);
     }
 
     public Result modifyEvent(String userID, long eventID, ModifyEventCommand command) {
         return modifyEventUseCase.execute(userID, eventID, command);
+    }
+
+    public ResultWrapper getEvent(String userID, long eventID) {
+        return getEventUseCase.execute(userID, eventID);
     }
 
 }
