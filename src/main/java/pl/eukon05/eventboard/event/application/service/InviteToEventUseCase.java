@@ -24,6 +24,9 @@ class InviteToEventUseCase {
 
         Event event = eventOptional.get();
 
+        if (selfID.equals(friendID))
+            return Result.INVITE_SELF;
+
         if (!checkIfFriendsPort.checkIfFriends(selfID, friendID)) return Result.USER_NOT_FRIEND;
 
         Result result = event.invite(selfID, friendID);
