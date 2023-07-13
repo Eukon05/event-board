@@ -16,6 +16,9 @@ public enum Result {
     ALREADY_ATTENDEE(HttpStatus.BAD_REQUEST, "You already attend this event"),
     ALREADY_INVITEE(HttpStatus.BAD_REQUEST, "The given user is already invited to the given event"),
     BEFRIEND_SELF(HttpStatus.BAD_REQUEST, "You cannot befriend yourself"),
+    INVITE_SELF(HttpStatus.BAD_REQUEST, "You cannot invite yourself to an event"),
+    INVITE_ORGANIZER(HttpStatus.BAD_REQUEST, "You cannot invite the organizer to their own event"),
+    ATTEND_SELF_ORGANIZED_EVENT(HttpStatus.BAD_REQUEST, "You are the organizer of this event, no need to mark your attendance"),
     NOT_ORGANIZER(HttpStatus.FORBIDDEN, "You are not the organizer of the given event and thus cannot modify it"),
     EVENT_ALREADY_PUBLIC(HttpStatus.BAD_REQUEST, "This event is already public");
 
