@@ -28,10 +28,10 @@ public class Event {
     private final Set<String> likedIDs;
 
     public Result attend(String userID) {
+        if (type.equals(EventType.PRIVATE) && !inviteeIDs.contains(userID)) return Result.EVENT_PRIVATE;
+
         if (organizerID.equals(userID)) return Result.ATTEND_SELF_ORGANIZED_EVENT;
         if (guestIDs.contains(userID)) return Result.ALREADY_ATTENDEE;
-
-        if (type.equals(EventType.PRIVATE) && !inviteeIDs.contains(userID)) return Result.EVENT_PRIVATE;
 
         guestIDs.add(userID);
         inviteeIDs.remove(userID);
@@ -40,14 +40,14 @@ public class Event {
     }
 
     public Result invite(String inviterID, String inviteeID) {
+        if (type.equals(EventType.PRIVATE) && !guestIDs.contains(inviterID) && !organizerID.equals(inviterID))
+            return Result.EVENT_PRIVATE;
+
         if (inviterID.equals(inviteeID)) return Result.INVITE_SELF;
         if (organizerID.equals(inviteeID)) return Result.INVITE_ORGANIZER;
 
         if (guestIDs.contains(inviteeID)) return Result.ALREADY_ATTENDEE;
         if (inviteeIDs.contains(inviteeID)) return Result.ALREADY_INVITEE;
-
-        if (type.equals(EventType.PRIVATE) && !guestIDs.contains(inviterID) && !organizerID.equals(inviterID))
-            return Result.EVENT_PRIVATE;
 
         inviteeIDs.add(inviteeID);
 
