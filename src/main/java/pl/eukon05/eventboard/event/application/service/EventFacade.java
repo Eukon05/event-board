@@ -21,40 +21,50 @@ public class EventFacade {
     private final InviteToEventUseCase inviteToEventUseCase;
     private final ModifyEventUseCase modifyEventUseCase;
     private final PublishEventUseCase publishEventUseCase;
-    private final SearchForEventUseCase searchForEventUseCase;
     private final GetEventUseCase getEventUseCase;
 
-
     public Result createEvent(String userID, CreateEventCommand command) {
-        return createEventUseCase.execute(userID, command);
+        return createEventUseCase.create(userID, command);
     }
 
     public Result publishEvent(String userID, long eventID) {
-        return publishEventUseCase.execute(userID, eventID);
+        return publishEventUseCase.publish(userID, eventID);
     }
 
     public Result attendEvent(String userID, long eventID) {
-        return attendEventUseCase.execute(userID, eventID);
+        return attendEventUseCase.attend(userID, eventID);
     }
 
     public Result inviteToEvent(String userID, String friendID, long eventID) {
-        return inviteToEventUseCase.execute(userID, friendID, eventID);
+        return inviteToEventUseCase.invite(userID, friendID, eventID);
     }
 
     public Result deleteEvent(String userID, long eventID) {
-        return deleteEventUseCase.execute(userID, eventID);
+        return deleteEventUseCase.delete(userID, eventID);
     }
 
     public Page<EventDTO> searchForEvent(Map<String, String> parameters, Pageable pageable) {
-        return searchForEventUseCase.execute(parameters, pageable);
+        return getEventUseCase.search(parameters, pageable);
+    }
+
+    public Page<EventDTO> searchForAttended(String userID, Pageable pageable) {
+        return getEventUseCase.getAttendedByUser(userID, pageable);
+    }
+
+    public Page<EventDTO> searchForInvited(String userID, Pageable pageable) {
+        return getEventUseCase.getInvitedForUser(userID, pageable);
+    }
+
+    public Page<EventDTO> searchForOrganized(String userID, Pageable pageable) {
+        return getEventUseCase.getOrganizedByUser(userID, pageable);
     }
 
     public Result modifyEvent(String userID, long eventID, ModifyEventCommand command) {
-        return modifyEventUseCase.execute(userID, eventID, command);
+        return modifyEventUseCase.modify(userID, eventID, command);
     }
 
     public ResultWrapper getEvent(String userID, long eventID) {
-        return getEventUseCase.execute(userID, eventID);
+        return getEventUseCase.getById(userID, eventID);
     }
 
 }

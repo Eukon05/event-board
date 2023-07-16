@@ -19,6 +19,6 @@ final class UnitTestUtils {
     }
 
     static void gettingEventWillReturn(GetEventPort port, Event event) {
-        Mockito.when(port.getEventById(Mockito.anyLong())).thenReturn(Optional.of(event));
+        Mockito.when(port.getById(Mockito.anyLong())).thenReturn(Optional.of(event));
     }
 }

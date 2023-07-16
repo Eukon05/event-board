@@ -72,4 +72,21 @@ class EventController {
         return ResponseEntity.status(wrapper.getResult().getStatus()).body(wrapper.getContent());
     }
 
+    @GetMapping("/attended")
+    ResponseEntity<Object> getAttended(Principal principal, @ParameterObject Pageable pageable) {
+        Page<EventDTO> page = facade.searchForAttended(principal.getName(), pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+    @GetMapping("/invited")
+    ResponseEntity<Object> getInvited(Principal principal, @ParameterObject Pageable pageable) {
+        Page<EventDTO> page = facade.searchForInvited(principal.getName(), pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+    @GetMapping("/organized")
+    ResponseEntity<Object> getOrganized(Principal principal, @ParameterObject Pageable pageable) {
+        Page<EventDTO> page = facade.searchForOrganized(principal.getName(), pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
 }

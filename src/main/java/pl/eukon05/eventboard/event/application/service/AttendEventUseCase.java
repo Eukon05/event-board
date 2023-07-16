@@ -15,8 +15,8 @@ class AttendEventUseCase {
     private final GetEventPort getEventPort;
     private final SaveEventPort saveEventPort;
 
-    Result execute(String userID, long eventID) {
-        Optional<Event> eventOptional = getEventPort.getEventById(eventID);
+    Result attend(String userID, long eventID) {
+        Optional<Event> eventOptional = getEventPort.getById(eventID);
 
         if (eventOptional.isEmpty()) return Result.EVENT_NOT_FOUND;
 

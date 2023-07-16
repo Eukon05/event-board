@@ -16,7 +16,7 @@ class CreateEventUseCase {
     private final SaveEventPort saveEventPort;
     private final EventCommandMapper mapper;
 
-    Result execute(String userId, CreateEventCommand command) {
+    Result create(String userId, CreateEventCommand command) {
         Event event = mapper.mapCreateCommandToDomain(command);
         event.setType(EventType.PRIVATE);
         event.setOrganizerID(userId);

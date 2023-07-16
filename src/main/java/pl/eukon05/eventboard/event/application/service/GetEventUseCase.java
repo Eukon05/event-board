@@ -1,14 +1,18 @@
 package pl.eukon05.eventboard.event.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.ResultWrapper;
 import pl.eukon05.eventboard.common.UseCase;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
+import pl.eukon05.eventboard.event.application.port.out.dto.EventDTO;
 import pl.eukon05.eventboard.event.application.port.out.dto.EventDTOMapper;
 import pl.eukon05.eventboard.event.domain.Event;
 import pl.eukon05.eventboard.event.domain.EventType;
 
+import java.util.Map;
 import java.util.Optional;
 
 @UseCase
@@ -17,8 +21,8 @@ class GetEventUseCase {
     private final GetEventPort getEventPort;
     private final EventDTOMapper mapper;
 
-    ResultWrapper execute(String userID, long eventID) {
-        Optional<Event> eventOptional = getEventPort.getEventById(eventID);
+    ResultWrapper getById(String userID, long eventID) {
+        Optional<Event> eventOptional = getEventPort.getById(eventID);
 
         if (eventOptional.isEmpty()) return ResultWrapper.of(Result.EVENT_NOT_FOUND);
 
@@ -28,5 +32,21 @@ class GetEventUseCase {
             return ResultWrapper.of(Result.EVENT_PRIVATE);
 
         return ResultWrapper.of(Result.SUCCESS, mapper.mapDomainToDTO(event));
+    }
+
+    Page<EventDTO> search(Map<String, String> parameters, Pageable pageable) {
+        return getEventPort.search(parameters, pageable).map(mapper::mapDomainToDTO);
+    }
+
+    Page<EventDTO> getAttendedByUser(String userID, Pageable pageable) {
+        return getEventPort.getAttendedByUser(userID, pageable).map(mapper::mapDomainToDTO);
+    }
+
+    Page<EventDTO> getInvitedForUser(String userID, Pageable pageable) {
+        return getEventPort.getInvitedForUser(userID, pageable).map(mapper::mapDomainToDTO);
+    }
+
+    Page<EventDTO> getOrganizedByUser(String userID, Pageable pageable) {
+        return getEventPort.getOrganizedByUser(userID, pageable).map(mapper::mapDomainToDTO);
     }
 }

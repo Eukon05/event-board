@@ -27,11 +27,11 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertEquals(Result.SUCCESS, inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.SUCCESS, inviteToEventUseCase.invite(userID, friendID, event.getId()));
         assertThat(event.getInviteeIDs(), contains(friendID));
 
         verify(checkIfFriendsPort).checkIfFriends(userID, friendID);
-        verify(getEventPort).getEventById(event.getId());
+        verify(getEventPort).getById(event.getId());
         verify(saveEventPort).saveEvent(event);
     }
 
@@ -45,7 +45,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertEquals(Result.SUCCESS, inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.SUCCESS, inviteToEventUseCase.invite(userID, friendID, event.getId()));
     }
 
     @Test
@@ -58,7 +58,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertEquals(Result.SUCCESS, inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.SUCCESS, inviteToEventUseCase.invite(userID, friendID, event.getId()));
     }
 
     @Test
@@ -68,7 +68,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(false);
 
-        assertEquals(Result.USER_NOT_FRIEND, inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.USER_NOT_FRIEND, inviteToEventUseCase.invite(userID, friendID, event.getId()));
     }
 
     @Test
@@ -80,7 +80,7 @@ class InviteToEventUnitTests {
         gettingEventWillReturn(getEventPort, event);
         checkingFriendsWillReturn(true);
 
-        assertEquals(Result.EVENT_PRIVATE, inviteToEventUseCase.execute(userID, friendID, event.getId()));
+        assertEquals(Result.EVENT_PRIVATE, inviteToEventUseCase.invite(userID, friendID, event.getId()));
     }
 
     private void checkingFriendsWillReturn(boolean value) {

@@ -24,10 +24,10 @@ class PublishEventUnitTests {
         event.setType(EventType.PRIVATE);
         gettingEventWillReturn(getEventPort, event);
 
-        Result result = publishEventUseCase.execute(userID, 1L);
+        Result result = publishEventUseCase.publish(userID, 1L);
 
         assertEquals(Result.SUCCESS, result);
-        verify(getEventPort).getEventById(1L);
+        verify(getEventPort).getById(1L);
         verify(saveEventPort).saveEvent(event);
         assertEquals(EventType.PUBLIC, event.getType());
     }
@@ -37,7 +37,7 @@ class PublishEventUnitTests {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        assertEquals(Result.NOT_ORGANIZER, publishEventUseCase.execute(userID, 1L));
+        assertEquals(Result.NOT_ORGANIZER, publishEventUseCase.publish(userID, 1L));
     }
 
 }

@@ -20,13 +20,28 @@ class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEven
     private final EventEntityMapper mapper;
 
     @Override
-    public Optional<Event> getEventById(long eventID) {
+    public Optional<Event> getById(long eventID) {
         return repository.findById(eventID).map(mapper::mapEntityToDomain);
     }
 
     @Override
     public Page<Event> search(Map<String, String> parameters, Pageable pageable) {
         return repository.findAll(EventSpecs.build(parameters), pageable).map(mapper::mapEntityToDomain);
+    }
+
+    @Override
+    public Page<Event> getAttendedByUser(String userID, Pageable pageable) {
+        return repository.findByGuestIDsContainingOrderByIdDesc(userID, pageable).map(mapper::mapEntityToDomain);
+    }
+
+    @Override
+    public Page<Event> getInvitedForUser(String userID, Pageable pageable) {
+        return repository.findByInviteeIDsContainingOrderByIdDesc(userID, pageable).map(mapper::mapEntityToDomain);
+    }
+
+    @Override
+    public Page<Event> getOrganizedByUser(String userID, Pageable pageable) {
+        return repository.findByOrganizerIDOrderByIdDesc(userID, pageable).map(mapper::mapEntityToDomain);
     }
 
     @Override

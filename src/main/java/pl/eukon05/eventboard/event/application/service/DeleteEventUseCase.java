@@ -15,8 +15,8 @@ class DeleteEventUseCase {
     private final GetEventPort getEventPort;
     private final DeleteEventPort deleteEventPort;
 
-    public Result execute(String userID, long eventID) {
-        Optional<Event> eventOptional = getEventPort.getEventById(eventID);
+    public Result delete(String userID, long eventID) {
+        Optional<Event> eventOptional = getEventPort.getById(eventID);
         if (eventOptional.isEmpty())
             return Result.EVENT_NOT_FOUND;
 

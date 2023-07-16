@@ -34,8 +34,8 @@ class ModifyEventUnitTests {
 
         gettingEventWillReturn(getEventPort, event);
 
-        modifyEventUseCase.execute(userID, 1L, command);
-        verify(getEventPort).getEventById(1L);
+        modifyEventUseCase.modify(userID, 1L, command);
+        verify(getEventPort).getById(1L);
 
         assertEquals(command.name().get(), event.getName());
         assertEquals(command.description().get(), event.getDescription());
@@ -49,7 +49,7 @@ class ModifyEventUnitTests {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        assertEquals(Result.NOT_ORGANIZER, modifyEventUseCase.execute(userID, 1L, command));
+        assertEquals(Result.NOT_ORGANIZER, modifyEventUseCase.modify(userID, 1L, command));
     }
 
 }

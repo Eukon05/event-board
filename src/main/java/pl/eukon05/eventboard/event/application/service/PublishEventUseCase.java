@@ -17,8 +17,8 @@ class PublishEventUseCase {
     private final SaveEventPort saveEventPort;
     private final GetEventPort getEventPort;
 
-    public Result execute(String userID, long id) {
-        Optional<Event> eventOptional = getEventPort.getEventById(id);
+    public Result publish(String userID, long id) {
+        Optional<Event> eventOptional = getEventPort.getById(id);
         if (eventOptional.isEmpty())
             return Result.EVENT_NOT_FOUND;
 

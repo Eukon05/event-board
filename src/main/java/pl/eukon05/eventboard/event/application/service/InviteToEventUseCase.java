@@ -17,8 +17,8 @@ class InviteToEventUseCase {
     private final GetEventPort getEventPort;
     private final SaveEventPort saveEventPort;
 
-    Result execute(String selfID, String friendID, long eventID) {
-        Optional<Event> eventOptional = getEventPort.getEventById(eventID);
+    Result invite(String selfID, String friendID, long eventID) {
+        Optional<Event> eventOptional = getEventPort.getById(eventID);
 
         if (eventOptional.isEmpty()) return Result.EVENT_NOT_FOUND;
 

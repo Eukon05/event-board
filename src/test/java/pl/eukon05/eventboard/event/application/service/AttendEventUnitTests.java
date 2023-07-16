@@ -24,8 +24,8 @@ class AttendEventUnitTests {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        attendEventUseCase.execute(userID, event.getId());
-        verify(getEventPort).getEventById(1L);
+        attendEventUseCase.attend(userID, event.getId());
+        verify(getEventPort).getById(1L);
         verify(saveEventPort).saveEvent(event);
 
         assertThat(event.getGuestIDs(), contains(userID));
@@ -37,7 +37,7 @@ class AttendEventUnitTests {
         event.setType(EventType.PRIVATE);
         gettingEventWillReturn(getEventPort, event);
 
-        assertEquals(Result.EVENT_PRIVATE, attendEventUseCase.execute(userID, event.getId()));
+        assertEquals(Result.EVENT_PRIVATE, attendEventUseCase.attend(userID, event.getId()));
     }
 
     @Test
@@ -47,6 +47,6 @@ class AttendEventUnitTests {
         event.getInviteeIDs().add(userID);
         gettingEventWillReturn(getEventPort, event);
 
-        assertEquals(Result.SUCCESS, attendEventUseCase.execute(userID, event.getId()));
+        assertEquals(Result.SUCCESS, attendEventUseCase.attend(userID, event.getId()));
     }
 }

@@ -8,9 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface GetEventPort {
-
-    Optional<Event> getEventById(long eventID);
+    Optional<Event> getById(long eventID);
 
     Page<Event> search(Map<String, String> parameters, Pageable pageable);
 
+    Page<Event> getAttendedByUser(String userID, Pageable pageable);
+
+    Page<Event> getInvitedForUser(String userID, Pageable pageable);
+
+    Page<Event> getOrganizedByUser(String userID, Pageable pageable);
 }

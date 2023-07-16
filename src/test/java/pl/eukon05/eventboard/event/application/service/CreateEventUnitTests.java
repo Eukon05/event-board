@@ -47,7 +47,7 @@ class CreateEventUnitTests {
                 ));
 
 
-        createEventUseCase.execute(userID, command);
+        createEventUseCase.create(userID, command);
         verify(saveEventPort).saveEvent(Mockito.any(Event.class));
     }
 }

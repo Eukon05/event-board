@@ -23,8 +23,8 @@ class DeleteEventUnitTests {
 
         gettingEventWillReturn(getEventPort, event);
 
-        deleteEventUseCase.execute(userID, 1L);
-        verify(getEventPort).getEventById(1L);
+        deleteEventUseCase.delete(userID, 1L);
+        verify(getEventPort).getById(1L);
         verify(deleteEventPort).deleteEvent(event.getId());
     }
 
@@ -33,6 +33,6 @@ class DeleteEventUnitTests {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        assertEquals(Result.NOT_ORGANIZER, deleteEventUseCase.execute(userID, 1L));
+        assertEquals(Result.NOT_ORGANIZER, deleteEventUseCase.delete(userID, 1L));
     }
 }
