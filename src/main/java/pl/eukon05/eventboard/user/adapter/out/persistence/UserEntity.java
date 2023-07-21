@@ -18,4 +18,7 @@ class UserEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> friendIDs;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> friendRequestIDs;
 }

@@ -17,7 +17,7 @@ class CreateUserUseCase implements CreateUserPort {
 
     public void createUser(String id) {
         if (getUserPort.getUserById(id).isEmpty()) {
-            User user = new User(id, Collections.emptySet());
+            User user = new User(id, Collections.emptySet(), Collections.emptySet());
             saveUserPort.saveUser(user);
         }
     }

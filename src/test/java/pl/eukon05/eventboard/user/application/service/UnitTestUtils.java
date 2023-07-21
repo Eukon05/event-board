@@ -9,11 +9,11 @@ import java.util.Optional;
 
 final class UnitTestUtils {
     static User createUserOne() {
-        return new User("userone", new HashSet<>());
+        return new User("userone", new HashSet<>(), new HashSet<>());
     }
 
     static User createUserTwo() {
-        return new User("usertwo", new HashSet<>());
+        return new User("usertwo", new HashSet<>(), new HashSet<>());
     }
 
     static void gettingUserByIdWillReturn(GetUserPort port, String id, User user) {

@@ -29,13 +29,14 @@ class BefriendUserUseCase {
         User self = selfOptional.get();
         User friend = friendOptional.get();
 
-        if (self.friendIDs().contains(friendID))
+        if (self.friendIDs().contains(friendID) || friend.friendIDs().contains(selfID))
             return Result.USER_ALREADY_FRIEND;
 
-        self.friendIDs().add(friendID);
-        friend.friendIDs().add(selfID);
+        if (friend.friendRequestIDs().contains(selfID))
+            return Result.FRIEND_REQUEST_ALREADY_SENT;
 
-        saveUserPort.saveUser(self);
+        friend.friendRequestIDs().add(selfID);
+
         saveUserPort.saveUser(friend);
 
         return Result.SUCCESS;
