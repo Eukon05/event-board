@@ -1,13 +1,15 @@
 # Event Board
+
 - Project start: 30.05.2023
 - Project goal: Improve my ability to write clean and maintainable code, by utilising "hexagonal architecture" and TDD
 - Additional goals: Learn Gradle
 
-## Planned features
-- [ ] Ability for organisations to create and manage event announcements
-- [ ] Ability for private users to create private events visible only to their friends
-- [ ] Ability for moderators to curate the list of public events
-- [ ] Ability for private users to invite their friends to public and private events
-- [ ] Ability for private users to declare interest in an event, boosting its rating
-- [ ] Oauth2 login and registration with Keycloak
-- [ ] Easy deployment with Docker
+## Features
+
+- Users can perform standard CRUD operations on events
+- Events can be public or private - private events can only be viewed by people that the organizer has invited, or that
+  other guests have invited, while public events can be searched for by everyone
+- Users can become friends, which allows them to invite each-other to events
+- The app is integrated with Keycloak, an OAuth2 authentication server, which allows users to log-in using their social
+  media accounts
+- The API's documentation can be viewed easily, thanks to OpenAPI's SwaggerUI
