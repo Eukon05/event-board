@@ -10,21 +10,22 @@ import pl.eukon05.eventboard.event.domain.EventType;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.*;
 
-class AttendEventUnitTests {
+class ManageEventAttendanceUnitTests {
     private final SaveEventPort saveEventPort = Mockito.mock(SaveEventPort.class);
     private final GetEventPort getEventPort = Mockito.mock(GetEventPort.class);
-    private final AttendEventUseCase attendEventUseCase = new AttendEventUseCase(getEventPort, saveEventPort);
+    private final ManageEventAttendanceUseCase manageEventAttendanceUseCase = new ManageEventAttendanceUseCase(getEventPort, saveEventPort);
 
     @Test
     void should_attend_event() {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        attendEventUseCase.attend(userID, event.getId());
+        manageEventAttendanceUseCase.attend(userID, event.getId());
         verify(getEventPort).getById(1L);
         verify(saveEventPort).saveEvent(event);
 
@@ -37,7 +38,7 @@ class AttendEventUnitTests {
         event.setType(EventType.PRIVATE);
         gettingEventWillReturn(getEventPort, event);
 
-        assertEquals(Result.EVENT_PRIVATE, attendEventUseCase.attend(userID, event.getId()));
+        assertEquals(Result.EVENT_PRIVATE, manageEventAttendanceUseCase.attend(userID, event.getId()));
     }
 
     @Test
@@ -47,6 +48,32 @@ class AttendEventUnitTests {
         event.getInviteeIDs().add(userID);
         gettingEventWillReturn(getEventPort, event);
 
-        assertEquals(Result.SUCCESS, attendEventUseCase.attend(userID, event.getId()));
+        assertEquals(Result.SUCCESS, manageEventAttendanceUseCase.attend(userID, event.getId()));
+    }
+
+    @Test
+    void should_unattend_event() {
+        Event event = createTestPublicEvent();
+        gettingEventWillReturn(getEventPort, event);
+
+        event.getGuestIDs().add(userID);
+
+        manageEventAttendanceUseCase.unattend(userID, event.getId());
+
+        verify(getEventPort).getById(1L);
+        verify(saveEventPort).saveEvent(event);
+
+        assertThat(event.getGuestIDs(), not(contains(userID)));
+    }
+
+    @Test
+    void should_not_unattend_event() {
+        Event event = createTestPublicEvent();
+        gettingEventWillReturn(getEventPort, event);
+
+        Result result = manageEventAttendanceUseCase.unattend(userID, event.getId());
+
+        assertEquals(Result.NOT_ATTENDEE, result);
+        verify(getEventPort).getById(1L);
     }
 }

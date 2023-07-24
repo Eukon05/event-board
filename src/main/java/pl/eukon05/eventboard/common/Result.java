@@ -14,6 +14,7 @@ public enum Result {
     USER_ALREADY_FRIEND(HttpStatus.BAD_REQUEST, "You are already friends with the given user"),
     EVENT_PRIVATE(HttpStatus.FORBIDDEN, "This event is private and you cannot access it"),
     ALREADY_ATTENDEE(HttpStatus.BAD_REQUEST, "You already attend this event"),
+    NOT_ATTENDEE(HttpStatus.BAD_REQUEST, "You are not attending this event"),
     ALREADY_INVITEE(HttpStatus.BAD_REQUEST, "The given user is already invited to the given event"),
     BEFRIEND_SELF(HttpStatus.BAD_REQUEST, "You cannot befriend yourself"),
     INVITE_SELF(HttpStatus.BAD_REQUEST, "You cannot invite yourself to an event"),

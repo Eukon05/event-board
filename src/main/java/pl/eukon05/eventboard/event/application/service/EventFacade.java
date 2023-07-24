@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class EventFacade {
-    private final AttendEventUseCase attendEventUseCase;
+    private final ManageEventAttendanceUseCase manageEventAttendanceUseCase;
     private final CreateEventUseCase createEventUseCase;
     private final DeleteEventUseCase deleteEventUseCase;
     private final InviteToEventUseCase inviteToEventUseCase;
@@ -32,7 +32,11 @@ public class EventFacade {
     }
 
     public Result attendEvent(String userID, long eventID) {
-        return attendEventUseCase.attend(userID, eventID);
+        return manageEventAttendanceUseCase.attend(userID, eventID);
+    }
+
+    public Result unattendEvent(String userID, long eventID) {
+        return manageEventAttendanceUseCase.unattend(userID, eventID);
     }
 
     public Result inviteToEvent(String userID, String friendID, long eventID) {

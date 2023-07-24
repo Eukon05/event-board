@@ -48,6 +48,12 @@ class EventController {
         return ResponseEntity.status(result.getStatus()).body(result.getMessage());
     }
 
+    @PostMapping("/{id}/unattend")
+    ResponseEntity<String> unattendEvent(Principal principal, @PathVariable long id) {
+        Result result = facade.unattendEvent(principal.getName(), id);
+        return ResponseEntity.status(result.getStatus()).body(result.getMessage());
+    }
+
     @DeleteMapping("/{id}")
     ResponseEntity<String> deleteEvent(Principal principal, @PathVariable long id) {
         Result result = facade.deleteEvent(principal.getName(), id);

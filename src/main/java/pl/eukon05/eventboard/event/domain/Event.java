@@ -39,6 +39,15 @@ public class Event {
         return Result.SUCCESS;
     }
 
+    public Result unattend(String userID) {
+        if (type.equals(EventType.PRIVATE) && !inviteeIDs.contains(userID)) return Result.EVENT_PRIVATE;
+        if (!guestIDs.contains(userID)) return Result.NOT_ATTENDEE;
+
+        guestIDs.remove(userID);
+
+        return Result.SUCCESS;
+    }
+
     public Result invite(String inviterID, String inviteeID) {
         if (type.equals(EventType.PRIVATE) && !guestIDs.contains(inviterID) && !organizerID.equals(inviterID))
             return Result.EVENT_PRIVATE;
