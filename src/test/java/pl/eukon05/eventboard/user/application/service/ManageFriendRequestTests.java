@@ -25,18 +25,18 @@ class ManageFriendRequestTests {
         User one = createUserOne();
         User two = createUserTwo();
 
-        one.friendRequestIDs().add(two.id());
+        one.getFriendRequestIDs().add(two.getId());
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.SUCCESS, manageFriendRequestUseCase.acceptFriendRequest(one.id(), two.id()));
+        assertEquals(Result.SUCCESS, manageFriendRequestUseCase.acceptFriendRequest(one.getId(), two.getId()));
 
         verify(saveUserPort).saveUser(one);
         verify(saveUserPort).saveUser(two);
 
-        assertThat(one.friendIDs(), contains(two.id()));
-        assertThat(two.friendIDs(), contains(one.id()));
+        assertThat(one.getFriendIDs(), contains(two.getId()));
+        assertThat(two.getFriendIDs(), contains(one.getId()));
     }
 
     @Test
@@ -44,10 +44,10 @@ class ManageFriendRequestTests {
         User one = createUserOne();
         User two = createUserTwo();
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.FRIEND_NOT_REQUESTED, manageFriendRequestUseCase.acceptFriendRequest(one.id(), two.id()));
+        assertEquals(Result.FRIEND_NOT_REQUESTED, manageFriendRequestUseCase.acceptFriendRequest(one.getId(), two.getId()));
     }
 
     @Test
@@ -55,17 +55,17 @@ class ManageFriendRequestTests {
         User one = createUserOne();
         User two = createUserTwo();
 
-        one.friendRequestIDs().add(two.id());
+        one.getFriendRequestIDs().add(two.getId());
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.SUCCESS, manageFriendRequestUseCase.rejectFriendRequest(one.id(), two.id()));
+        assertEquals(Result.SUCCESS, manageFriendRequestUseCase.rejectFriendRequest(one.getId(), two.getId()));
 
         verify(saveUserPort).saveUser(one);
 
-        assertThat(one.friendIDs(), not(contains(two.id())));
-        assertThat(one.friendRequestIDs(), not(contains(two.id())));
+        assertThat(one.getFriendIDs(), not(contains(two.getId())));
+        assertThat(one.getFriendRequestIDs(), not(contains(two.getId())));
     }
 
     @Test
@@ -73,10 +73,10 @@ class ManageFriendRequestTests {
         User one = createUserOne();
         User two = createUserTwo();
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.FRIEND_NOT_REQUESTED, manageFriendRequestUseCase.rejectFriendRequest(one.id(), two.id()));
+        assertEquals(Result.FRIEND_NOT_REQUESTED, manageFriendRequestUseCase.rejectFriendRequest(one.getId(), two.getId()));
     }
 
 }

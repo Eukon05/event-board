@@ -13,24 +13,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
 
-class BefriendUserTests {
+class CreateFriendRequestTests {
     private final SaveUserPort saveUserPort = Mockito.mock(SaveUserPort.class);
     private final GetUserPort getUserPort = Mockito.mock(GetUserPort.class);
-    private final BefriendUserUseCase befriendUserUseCase = new BefriendUserUseCase(getUserPort, saveUserPort);
+    private final CreateFriendRequestUseCase createFriendRequestUseCase = new CreateFriendRequestUseCase(getUserPort, saveUserPort);
 
     @Test
     void should_befriend_user() {
         User one = createUserOne();
         User two = createUserTwo();
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.SUCCESS, befriendUserUseCase.execute(one.id(), two.id()));
+        assertEquals(Result.SUCCESS, createFriendRequestUseCase.createFriendRequest(one.getId(), two.getId()));
 
         verify(saveUserPort).saveUser(two);
 
-        assertThat(two.friendRequestIDs(), contains(one.id()));
+        assertThat(two.getFriendRequestIDs(), contains(one.getId()));
     }
 
     @Test
@@ -38,13 +38,13 @@ class BefriendUserTests {
         User one = createUserOne();
         User two = createUserTwo();
 
-        one.friendIDs().add(two.id());
-        two.friendIDs().add(one.id());
+        one.getFriendIDs().add(two.getId());
+        two.getFriendIDs().add(one.getId());
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.USER_ALREADY_FRIEND, befriendUserUseCase.execute(one.id(), two.id()));
+        assertEquals(Result.USER_ALREADY_FRIEND, createFriendRequestUseCase.createFriendRequest(one.getId(), two.getId()));
     }
 
     @Test
@@ -52,17 +52,17 @@ class BefriendUserTests {
         User one = createUserOne();
         User two = createUserTwo();
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        two.friendRequestIDs().add(one.id());
-        assertEquals(Result.FRIEND_REQUEST_ALREADY_SENT, befriendUserUseCase.execute(one.id(), two.id()));
+        two.getFriendRequestIDs().add(one.getId());
+        assertEquals(Result.FRIEND_REQUEST_ALREADY_SENT, createFriendRequestUseCase.createFriendRequest(one.getId(), two.getId()));
     }
 
     @Test
     void should_not_befriend_self() {
         String id = "someid";
-        assertEquals(Result.BEFRIEND_SELF, befriendUserUseCase.execute(id, id));
+        assertEquals(Result.BEFRIEND_SELF, createFriendRequestUseCase.createFriendRequest(id, id));
     }
 
 }

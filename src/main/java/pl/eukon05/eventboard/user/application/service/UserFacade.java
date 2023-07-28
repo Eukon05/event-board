@@ -10,14 +10,14 @@ import pl.eukon05.eventboard.user.application.port.in.CheckIfFriendsPort;
 @RequiredArgsConstructor
 public class UserFacade implements CheckIfFriendsPort {
 
-    private final BefriendUserUseCase befriendUserUseCase;
-    private final DefriendUserUseCase defriendUserUseCase;
+    private final CreateFriendRequestUseCase createFriendRequestUseCase;
+    private final RemoveFriendUseCase removeFriendUseCase;
     private final CheckIfFriendsUseCase checkIfFriendsUseCase;
     private final ManageFriendRequestUseCase manageFriendRequestUseCase;
     private final GetFriendsUseCase getFriendsUseCase;
 
-    public Result befriend(String selfID, String friendID) {
-        return befriendUserUseCase.execute(selfID, friendID);
+    public Result createFriendRequest(String selfID, String friendID) {
+        return createFriendRequestUseCase.createFriendRequest(selfID, friendID);
     }
 
     public Result acceptFriendRequest(String selfID, String friendID) {
@@ -28,8 +28,8 @@ public class UserFacade implements CheckIfFriendsPort {
         return manageFriendRequestUseCase.rejectFriendRequest(selfID, friendID);
     }
 
-    public Result defriend(String selfID, String friendID) {
-        return defriendUserUseCase.execute(selfID, friendID);
+    public Result removeFriend(String selfID, String friendID) {
+        return removeFriendUseCase.removeFriend(selfID, friendID);
     }
 
     @Override

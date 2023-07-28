@@ -13,39 +13,39 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
 
-class DefriendUserTests {
+class RemoveFriendTests {
     private final SaveUserPort saveUserPort = Mockito.mock(SaveUserPort.class);
     private final GetUserPort getUserPort = Mockito.mock(GetUserPort.class);
-    private final DefriendUserUseCase defriendUserUseCase = new DefriendUserUseCase(getUserPort, saveUserPort);
+    private final RemoveFriendUseCase removeFriendUseCase = new RemoveFriendUseCase(getUserPort, saveUserPort);
 
     @Test
-    void should_defriend_user() {
+    void should_remove_friend() {
         User one = createUserOne();
         User two = createUserTwo();
 
-        one.friendIDs().add(two.id());
-        two.friendIDs().add(one.id());
+        one.getFriendIDs().add(two.getId());
+        two.getFriendIDs().add(one.getId());
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.SUCCESS, defriendUserUseCase.execute(one.id(), two.id()));
+        assertEquals(Result.SUCCESS, removeFriendUseCase.removeFriend(one.getId(), two.getId()));
         verify(saveUserPort).saveUser(one);
         verify(saveUserPort).saveUser(two);
 
-        assertThat(one.friendIDs(), empty());
-        assertThat(two.friendIDs(), empty());
+        assertThat(one.getFriendIDs(), empty());
+        assertThat(two.getFriendIDs(), empty());
     }
 
     @Test
-    void should_not_defriend_user() {
+    void should_not_remove_friend() {
         User one = createUserOne();
         User two = createUserTwo();
 
-        gettingUserByIdWillReturn(getUserPort, one.id(), one);
-        gettingUserByIdWillReturn(getUserPort, two.id(), two);
+        gettingUserByIdWillReturn(getUserPort, one.getId(), one);
+        gettingUserByIdWillReturn(getUserPort, two.getId(), two);
 
-        assertEquals(Result.USER_NOT_FRIEND, defriendUserUseCase.execute(one.id(), two.id()));
+        assertEquals(Result.USER_NOT_FRIEND, removeFriendUseCase.removeFriend(one.getId(), two.getId()));
     }
 
 }

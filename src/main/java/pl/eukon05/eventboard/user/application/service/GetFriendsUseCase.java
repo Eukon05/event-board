@@ -20,7 +20,7 @@ class GetFriendsUseCase {
 
         if (userOptional.isEmpty()) return ResultWrapper.of(Result.USER_NOT_FOUND);
 
-        Set<String> friendIDs = userOptional.get().friendIDs();
+        Set<String> friendIDs = userOptional.get().getFriendIDs();
         return ResultWrapper.of(Result.SUCCESS, friendIDs);
     }
 
@@ -29,7 +29,7 @@ class GetFriendsUseCase {
 
         if (userOptional.isEmpty()) return ResultWrapper.of(Result.USER_NOT_FOUND);
 
-        Set<String> friendRequestIDs = userOptional.get().friendRequestIDs();
+        Set<String> friendRequestIDs = userOptional.get().getFriendRequestIDs();
         return ResultWrapper.of(Result.SUCCESS, friendRequestIDs);
     }
 

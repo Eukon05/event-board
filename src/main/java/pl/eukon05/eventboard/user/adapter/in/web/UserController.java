@@ -18,7 +18,7 @@ class UserController {
 
     @PostMapping("/{id}/befriend")
     ResponseEntity<String> befriendUser(Principal principal, @PathVariable String id) {
-        Result result = facade.befriend(principal.getName(), id);
+        Result result = facade.createFriendRequest(principal.getName(), id);
         return new ResponseEntity<>(result.getMessage(), result.getStatus());
     }
 
@@ -36,7 +36,7 @@ class UserController {
 
     @PostMapping("/{id}/defriend")
     ResponseEntity<String> defriendUser(Principal principal, @PathVariable String id) {
-        Result result = facade.defriend(principal.getName(), id);
+        Result result = facade.removeFriend(principal.getName(), id);
         return new ResponseEntity<>(result.getMessage(), result.getStatus());
     }
 

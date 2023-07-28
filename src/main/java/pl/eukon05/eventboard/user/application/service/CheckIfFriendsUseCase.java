@@ -19,7 +19,7 @@ class CheckIfFriendsUseCase {
 
         User user = userOptional.get();
 
-        return user.friendIDs().contains(userTwo);
+        return user.getFriendIDs().contains(userTwo);
     }
 
 }

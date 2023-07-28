@@ -11,12 +11,15 @@ import java.util.Optional;
 
 @UseCase
 @RequiredArgsConstructor
-class DefriendUserUseCase {
+class CreateFriendRequestUseCase {
 
     private final GetUserPort getUserPort;
     private final SaveUserPort saveUserPort;
 
-    Result execute(String selfID, String friendID) {
+    Result createFriendRequest(String selfID, String friendID) {
+        if (selfID.equals(friendID))
+            return Result.BEFRIEND_SELF;
+
         Optional<User> selfOptional = getUserPort.getUserById(selfID);
         Optional<User> friendOptional = getUserPort.getUserById(friendID);
 
@@ -26,15 +29,12 @@ class DefriendUserUseCase {
         User self = selfOptional.get();
         User friend = friendOptional.get();
 
-        if (!self.friendIDs().contains(friendID))
-            return Result.USER_NOT_FRIEND;
+        Result result = friend.addFriendRequest(self);
 
-        self.friendIDs().remove(friendID);
-        friend.friendIDs().remove(selfID);
+        if (result.equals(Result.SUCCESS))
+            saveUserPort.saveUser(friend);
 
-        saveUserPort.saveUser(self);
-        saveUserPort.saveUser(friend);
-
-        return Result.SUCCESS;
+        return result;
     }
+
 }

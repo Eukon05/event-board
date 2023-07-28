@@ -27,17 +27,14 @@ class ManageFriendRequestUseCase {
         User self = selfOptional.get();
         User friend = friendOptional.get();
 
-        if (!self.friendRequestIDs().contains(friendID)) return Result.FRIEND_NOT_REQUESTED;
+        Result result = self.acceptFriendRequest(friend);
 
-        self.friendRequestIDs().remove(friendID);
-        self.friendIDs().add(friendID);
+        if (result.equals(Result.SUCCESS)) {
+            saveUserPort.saveUser(self);
+            saveUserPort.saveUser(friend);
+        }
 
-        friend.friendIDs().add(selfID);
-
-        saveUserPort.saveUser(self);
-        saveUserPort.saveUser(friend);
-
-        return Result.SUCCESS;
+        return result;
     }
 
     Result rejectFriendRequest(String selfID, String friendID) {
@@ -49,13 +46,11 @@ class ManageFriendRequestUseCase {
 
         User self = selfOptional.get();
 
-        if (!self.friendRequestIDs().contains(friendID)) return Result.FRIEND_NOT_REQUESTED;
+        Result result = self.rejectFriendRequest(friendID);
 
-        self.friendRequestIDs().remove(friendID);
+        if (result.equals(Result.SUCCESS)) saveUserPort.saveUser(self);
 
-        saveUserPort.saveUser(self);
-
-        return Result.SUCCESS;
+        return result;
     }
 
 }

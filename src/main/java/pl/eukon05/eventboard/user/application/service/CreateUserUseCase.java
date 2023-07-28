@@ -7,8 +7,6 @@ import pl.eukon05.eventboard.user.application.port.out.GetUserPort;
 import pl.eukon05.eventboard.user.application.port.out.SaveUserPort;
 import pl.eukon05.eventboard.user.domain.User;
 
-import java.util.Collections;
-
 @UseCase
 @RequiredArgsConstructor
 class CreateUserUseCase implements CreateUserPort {
@@ -17,7 +15,7 @@ class CreateUserUseCase implements CreateUserPort {
 
     public void createUser(String id) {
         if (getUserPort.getUserById(id).isEmpty()) {
-            User user = new User(id, Collections.emptySet(), Collections.emptySet());
+            User user = new User(id);
             saveUserPort.saveUser(user);
         }
     }
