@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
 
-class ManageFriendRequestTests {
+class ManageFriendRequestUnitTests {
 
     private final SaveUserPort saveUserPort = Mockito.mock(SaveUserPort.class);
     private final GetUserPort getUserPort = Mockito.mock(GetUserPort.class);
