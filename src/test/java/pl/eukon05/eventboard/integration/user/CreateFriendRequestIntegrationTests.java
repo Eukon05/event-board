@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.equalTo;
 class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
     private static final String BEFRIEND_USER_TWO_URL = "user/userTwo/befriend";
-    private static final String FRIENDS_URL = "user/friends/requests";
+    private static final String REQUESTS_URL = "user/friends/requests";
 
     @Test
     void should_create_friend_request() {
@@ -33,7 +33,7 @@ class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
                 .preemptive()
                 .oauth2(tokenTwo)
                 .when()
-                .get(FRIENDS_URL)
+                .get(REQUESTS_URL)
                 .then()
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body("[0]", equalTo(USER_ONE));
