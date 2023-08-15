@@ -8,6 +8,7 @@ import pl.eukon05.eventboard.integration.AbstractIntegrationTest;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.equalTo;
+import static pl.eukon05.eventboard.integration.IntegrationTestUtils.USER_ONE;
 
 class RemoveFriendIntegrationTests extends AbstractIntegrationTest {
 
@@ -16,24 +17,24 @@ class RemoveFriendIntegrationTests extends AbstractIntegrationTest {
 
     @Test
     void should_remove_friend() {
-        makeUsersFriends();
+        utils.makeUsersFriends();
 
-        String tokenOne = getToken(USER_ONE);
+        String tokenOne = utils.getToken(USER_ONE);
 
-        sendAPIPostRequest(REMOVE_URL, tokenOne)
+        utils.sendAPIPostRequest(REMOVE_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body(equalTo(Result.SUCCESS.getMessage()));
 
-        sendAPIGETRequest(FRIENDS_URL, tokenOne)
+        utils.sendAPIGETRequest(FRIENDS_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body("", equalTo(Collections.emptyList()));
     }
 
     @Test
     void should_not_remove_non_friend() {
-        String tokenOne = getToken(USER_ONE);
+        String tokenOne = utils.getToken(USER_ONE);
 
-        sendAPIPostRequest(REMOVE_URL, tokenOne)
+        utils.sendAPIPostRequest(REMOVE_URL, tokenOne)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(Result.USER_NOT_FRIEND.getMessage()));
     }

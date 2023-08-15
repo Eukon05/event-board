@@ -8,26 +8,28 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
+import static pl.eukon05.eventboard.integration.IntegrationTestUtils.USER_ONE;
+import static pl.eukon05.eventboard.integration.IntegrationTestUtils.USER_TWO;
 
 class GetFriendsIntegrationTests extends AbstractIntegrationTest {
     private static final String FRIENDS_URL = "user/friends";
 
     @Test
     void should_get_friends() {
-        makeUsersFriends();
+        utils.makeUsersFriends();
 
-        String tokenTwo = getToken(USER_TWO);
+        String tokenTwo = utils.getToken(USER_TWO);
 
-        sendAPIGETRequest(FRIENDS_URL, tokenTwo)
+        utils.sendAPIGETRequest(FRIENDS_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body("", equalTo(List.of(USER_ONE)));
     }
 
     @Test
     void should_get_empty_list() {
-        String tokenTwo = getToken(USER_TWO);
+        String tokenTwo = utils.getToken(USER_TWO);
 
-        sendAPIGETRequest(FRIENDS_URL, tokenTwo)
+        utils.sendAPIGETRequest(FRIENDS_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body("", equalTo(Collections.emptyList()));
     }

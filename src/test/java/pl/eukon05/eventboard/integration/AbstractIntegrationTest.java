@@ -1,83 +1,35 @@
 package pl.eukon05.eventboard.integration;
 
-import com.tngtech.keycloakmock.api.KeycloakMock;
-import com.tngtech.keycloakmock.api.ServerConfig;
-import com.tngtech.keycloakmock.api.TokenConfig;
 import io.restassured.RestAssured;
-import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.eukon05.eventboard.user.application.port.in.CreateUserPort;
-import pl.eukon05.eventboard.user.application.service.UserFacade;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = "test")
 @Testcontainers
+@Import(IntegrationTestUtils.class)
 public abstract class AbstractIntegrationTest {
-
-    //To allow for modifying DB data to prepare it for tests
     @Autowired
-    private UserFacade facade;
-
-    protected static String USER_ONE = "userOne";
-    protected static String USER_TWO = "userTwo";
+    protected IntegrationTestUtils utils;
 
     @Container
     private static final GenericContainer<BaeldungPostgresqlContainer> postgres = BaeldungPostgresqlContainer.getInstance();
-    private static final KeycloakMock keycloakMock = new KeycloakMock(ServerConfig.aServerConfig().withNoContextPath().withPort(8180).withDefaultRealm("events").build());
 
     @BeforeAll
-    public static void setUp(@Autowired CreateUserPort createUserPort, @LocalServerPort int localServerPort) {
-        keycloakMock.start();
-        RestAssured.basePath += "/api/v1/";
-
-        createUserPort.createUser(USER_ONE);
-        createUserPort.createUser(USER_TWO);
-
-        RestAssured.port = localServerPort;
+    static void setUp(@LocalServerPort int port) {
+        RestAssured.port = port;
     }
 
     @BeforeEach
     public void cleanUp() {
-        facade.rejectFriendRequest(USER_TWO, USER_ONE);
-        facade.removeFriend(USER_ONE, USER_TWO); //We don't care about the result, if the users are not friends, nothing will happen
+        utils.cleanUp();
     }
-
-    protected String getToken(String username) {
-        return keycloakMock.getAccessToken(TokenConfig.aTokenConfig().withSubject(username).build());
-    }
-
-    protected void makeUsersFriends() {
-        facade.createFriendRequest(USER_ONE, USER_TWO);
-        facade.acceptFriendRequest(USER_TWO, USER_ONE);
-    }
-
-    protected ValidatableResponse sendAPIPostRequest(String URL, String token) {
-        return sendAPIRequest(token)
-                .post(URL)
-                .then();
-    }
-
-    protected ValidatableResponse sendAPIGETRequest(String URL, String token) {
-        return sendAPIRequest(token)
-                .get(URL)
-                .then();
-    }
-
-    private RequestSpecification sendAPIRequest(String token) {
-        return RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(token)
-                .when();
-    }
-
 }
