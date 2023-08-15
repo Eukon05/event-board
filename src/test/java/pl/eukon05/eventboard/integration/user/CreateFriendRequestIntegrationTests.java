@@ -1,7 +1,6 @@
 package pl.eukon05.eventboard.integration.user;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.integration.AbstractIntegrationTest;
@@ -18,23 +17,11 @@ class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
         String tokenOne = getToken(USER_ONE);
         String tokenTwo = getToken(USER_TWO);
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenOne)
-                .when()
-                .post(BEFRIEND_USER_TWO_URL)
-                .then()
+        sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body(equalTo(Result.SUCCESS.getMessage()));
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenTwo)
-                .when()
-                .get(REQUESTS_URL)
-                .then()
+        sendAPIGETRequest(REQUESTS_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body("[0]", equalTo(USER_ONE));
     }
@@ -45,13 +32,7 @@ class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         String tokenOne = getToken(USER_ONE);
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenOne)
-                .when()
-                .post(BEFRIEND_USER_TWO_URL)
-                .then()
+        sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(Result.USER_ALREADY_FRIEND.getMessage()));
     }
@@ -60,23 +41,11 @@ class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
     void should_not_befriend_user_twice() {
         String tokenOne = getToken(USER_ONE);
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenOne)
-                .when()
-                .post(BEFRIEND_USER_TWO_URL)
-                .then()
+        sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body(equalTo(Result.SUCCESS.getMessage()));
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenOne)
-                .when()
-                .post(BEFRIEND_USER_TWO_URL)
-                .then()
+        sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(Result.FRIEND_REQUEST_ALREADY_SENT.getMessage()));
     }

@@ -1,7 +1,6 @@
 package pl.eukon05.eventboard.integration.user;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.integration.AbstractIntegrationTest;
@@ -24,13 +23,7 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         String tokenTwo = getToken(USER_TWO);
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenTwo)
-                .when()
-                .post(ACCEPT_USER_ONE_URL)
-                .then()
+        sendAPIPostRequest(ACCEPT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body(equalTo(Result.SUCCESS.getMessage()));
 
@@ -44,13 +37,7 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         String tokenTwo = getToken(USER_TWO);
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenTwo)
-                .when()
-                .post(REJECT_USER_ONE_URL)
-                .then()
+        sendAPIPostRequest(REJECT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body(equalTo(Result.SUCCESS.getMessage()));
 
@@ -61,13 +48,7 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
     void should_not_accept_nonexistent_friend_request() {
         String tokenTwo = getToken(USER_TWO);
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenTwo)
-                .when()
-                .post(ACCEPT_USER_ONE_URL)
-                .then()
+        sendAPIPostRequest(ACCEPT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(Result.FRIEND_NOT_REQUESTED.getMessage()));
     }
@@ -76,33 +57,17 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
     void should_not_reject_nonexistent_friend_request() {
         String tokenTwo = getToken(USER_TWO);
 
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(tokenTwo)
-                .when()
-                .post(REJECT_USER_ONE_URL)
-                .then()
+        sendAPIPostRequest(REJECT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(Result.FRIEND_NOT_REQUESTED.getMessage()));
     }
 
     private void sendFriendRequest(String token) {
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(token)
-                .post(BEFRIEND_USER_TWO_URL);
+        sendAPIPostRequest(BEFRIEND_USER_TWO_URL, token);
     }
 
     private void checkThereAreNoRequests(String token) {
-        RestAssured.given()
-                .auth()
-                .preemptive()
-                .oauth2(token)
-                .when()
-                .get(REQUESTS_URL)
-                .then()
+        sendAPIGETRequest(REQUESTS_URL, token)
                 .statusCode(HttpStatus.SC_SUCCESS)
                 .body("", equalTo(Collections.emptyList()));
     }

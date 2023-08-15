@@ -4,6 +4,8 @@ import com.tngtech.keycloakmock.api.KeycloakMock;
 import com.tngtech.keycloakmock.api.ServerConfig;
 import com.tngtech.keycloakmock.api.TokenConfig;
 import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,26 @@ public abstract class AbstractIntegrationTest {
     protected void makeUsersFriends() {
         facade.createFriendRequest(USER_ONE, USER_TWO);
         facade.acceptFriendRequest(USER_TWO, USER_ONE);
+    }
+
+    protected ValidatableResponse sendAPIPostRequest(String URL, String token) {
+        return sendAPIRequest(token)
+                .post(URL)
+                .then();
+    }
+
+    protected ValidatableResponse sendAPIGETRequest(String URL, String token) {
+        return sendAPIRequest(token)
+                .get(URL)
+                .then();
+    }
+
+    private RequestSpecification sendAPIRequest(String token) {
+        return RestAssured.given()
+                .auth()
+                .preemptive()
+                .oauth2(token)
+                .when();
     }
 
 }
