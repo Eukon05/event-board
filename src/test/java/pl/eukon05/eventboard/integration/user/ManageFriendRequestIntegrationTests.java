@@ -27,7 +27,7 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(ACCEPT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body(equalTo(Result.SUCCESS.getMessage()));
+                .body("message", equalTo(Result.SUCCESS.getMessage()));
 
         checkThereAreNoRequests(tokenTwo);
     }
@@ -41,7 +41,7 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(REJECT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body(equalTo(Result.SUCCESS.getMessage()));
+                .body("message", equalTo(Result.SUCCESS.getMessage()));
 
         checkThereAreNoRequests(tokenTwo);
     }
@@ -52,7 +52,7 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(ACCEPT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(equalTo(Result.FRIEND_NOT_REQUESTED.getMessage()));
+                .body("message", equalTo(Result.FRIEND_NOT_REQUESTED.getMessage()));
     }
 
     @Test
@@ -61,7 +61,7 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(REJECT_USER_ONE_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(equalTo(Result.FRIEND_NOT_REQUESTED.getMessage()));
+                .body("message", equalTo(Result.FRIEND_NOT_REQUESTED.getMessage()));
     }
 
     private void sendFriendRequest(String token) {
@@ -71,6 +71,6 @@ class ManageFriendRequestIntegrationTests extends AbstractIntegrationTest {
     private void checkThereAreNoRequests(String token) {
         utils.sendAPIGETRequest(REQUESTS_URL, token)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body("", equalTo(Collections.emptyList()));
+                .body("data", equalTo(Collections.emptyList()));
     }
 }

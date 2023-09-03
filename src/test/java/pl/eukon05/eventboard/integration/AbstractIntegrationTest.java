@@ -29,7 +29,7 @@ public abstract class AbstractIntegrationTest {
     }
 
     @BeforeEach
-    public void cleanUp() {
+    void cleanUp() {
         utils.cleanUp();
     }
 }

@@ -37,7 +37,7 @@ class GetEventUnitTests {
 
         ResultWrapper wrapper = getEventUseCase.getById(userID, event.getId());
         assertEquals(Result.EVENT_PRIVATE, wrapper.getResult());
-        assertEquals(Result.EVENT_PRIVATE.getMessage(), wrapper.getContent());
+        assertEquals(Result.EVENT_PRIVATE.getMessage(), wrapper.getMessage());
     }
 
     @Test

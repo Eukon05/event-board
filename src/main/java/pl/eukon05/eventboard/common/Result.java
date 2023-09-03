@@ -23,7 +23,8 @@ public enum Result {
     NOT_ORGANIZER(HttpStatus.FORBIDDEN, "You are not the organizer of the given event and thus cannot modify it"),
     EVENT_ALREADY_PUBLIC(HttpStatus.BAD_REQUEST, "This event is already public"),
     FRIEND_REQUEST_ALREADY_SENT(HttpStatus.BAD_REQUEST, "You already sent a friend request to this user"),
-    FRIEND_NOT_REQUESTED(HttpStatus.BAD_REQUEST, "This user has not sent you a friend request");
+    FRIEND_NOT_REQUESTED(HttpStatus.BAD_REQUEST, "This user has not sent you a friend request"),
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "Validation of your input was not successful");
 
 
     private final HttpStatus status;

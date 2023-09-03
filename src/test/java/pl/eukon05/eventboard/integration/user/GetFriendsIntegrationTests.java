@@ -22,7 +22,7 @@ class GetFriendsIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIGETRequest(FRIENDS_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body("", equalTo(List.of(USER_ONE)));
+                .body("data", equalTo(List.of(USER_ONE)));
     }
 
     @Test
@@ -31,7 +31,7 @@ class GetFriendsIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIGETRequest(FRIENDS_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body("", equalTo(Collections.emptyList()));
+                .body("data", equalTo(Collections.emptyList()));
     }
 
 }

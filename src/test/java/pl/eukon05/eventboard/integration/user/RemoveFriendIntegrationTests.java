@@ -23,11 +23,11 @@ class RemoveFriendIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(REMOVE_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body(equalTo(Result.SUCCESS.getMessage()));
+                .body("message", equalTo(Result.SUCCESS.getMessage()));
 
         utils.sendAPIGETRequest(FRIENDS_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body("", equalTo(Collections.emptyList()));
+                .body("data", equalTo(Collections.emptyList()));
     }
 
     @Test
@@ -36,7 +36,7 @@ class RemoveFriendIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(REMOVE_URL, tokenOne)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(equalTo(Result.USER_NOT_FRIEND.getMessage()));
+                .body("message", equalTo(Result.USER_NOT_FRIEND.getMessage()));
     }
 
 }

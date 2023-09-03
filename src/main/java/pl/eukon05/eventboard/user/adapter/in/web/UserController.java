@@ -3,7 +3,6 @@ package pl.eukon05.eventboard.user.adapter.in.web;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.ResultWrapper;
 import pl.eukon05.eventboard.user.application.service.UserFacade;
 
@@ -17,38 +16,38 @@ class UserController {
     private final UserFacade facade;
 
     @PostMapping("/{id}/befriend")
-    ResponseEntity<String> befriendUser(Principal principal, @PathVariable String id) {
-        Result result = facade.createFriendRequest(principal.getName(), id);
-        return new ResponseEntity<>(result.getMessage(), result.getStatus());
+    ResponseEntity<ResultWrapper> befriendUser(Principal principal, @PathVariable String id) {
+        ResultWrapper result = facade.createFriendRequest(principal.getName(), id);
+        return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @PostMapping("/{id}/accept")
-    ResponseEntity<String> acceptFriendRequest(Principal principal, @PathVariable String id) {
-        Result result = facade.acceptFriendRequest(principal.getName(), id);
-        return new ResponseEntity<>(result.getMessage(), result.getStatus());
+    ResponseEntity<ResultWrapper> acceptFriendRequest(Principal principal, @PathVariable String id) {
+        ResultWrapper result = facade.acceptFriendRequest(principal.getName(), id);
+        return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @PostMapping("/{id}/reject")
-    ResponseEntity<String> rejectFriendRequest(Principal principal, @PathVariable String id) {
-        Result result = facade.rejectFriendRequest(principal.getName(), id);
-        return new ResponseEntity<>(result.getMessage(), result.getStatus());
+    ResponseEntity<ResultWrapper> rejectFriendRequest(Principal principal, @PathVariable String id) {
+        ResultWrapper result = facade.rejectFriendRequest(principal.getName(), id);
+        return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @PostMapping("/{id}/defriend")
-    ResponseEntity<String> defriendUser(Principal principal, @PathVariable String id) {
-        Result result = facade.removeFriend(principal.getName(), id);
-        return new ResponseEntity<>(result.getMessage(), result.getStatus());
+    ResponseEntity<ResultWrapper> defriendUser(Principal principal, @PathVariable String id) {
+        ResultWrapper result = facade.removeFriend(principal.getName(), id);
+        return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @GetMapping("/friends")
-    ResponseEntity<Object> getFriends(Principal principal) {
+    ResponseEntity<ResultWrapper> getFriends(Principal principal) {
         ResultWrapper result = facade.getFriends(principal.getName());
-        return ResponseEntity.status(result.getResult().getStatus()).body(result.getContent());
+        return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @GetMapping("/friends/requests")
-    ResponseEntity<Object> getFriendRequests(Principal principal) {
+    ResponseEntity<ResultWrapper> getFriendRequests(Principal principal) {
         ResultWrapper result = facade.getFriendRequests(principal.getName());
-        return ResponseEntity.status(result.getResult().getStatus()).body(result.getContent());
+        return ResponseEntity.status(result.getStatus()).body(result);
     }
 }
