@@ -43,6 +43,12 @@ class EventController {
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
+    @PostMapping("/{id}/unpublish")
+    ResponseEntity<ResultWrapper> unpublishEvent(Principal principal, @PathVariable long id) {
+        ResultWrapper result = facade.unpublishEvent(principal.getName(), id);
+        return ResponseEntity.status(result.getStatus()).body(result);
+    }
+
     @PostMapping("/{id}/invite")
     ResponseEntity<ResultWrapper> inviteToEvent(Principal principal, @PathVariable long id, @RequestParam String friendID) {
         ResultWrapper result = facade.inviteToEvent(principal.getName(), friendID, id);

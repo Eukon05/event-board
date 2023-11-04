@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @UseCase
 @RequiredArgsConstructor
-class PublishEventUseCase {
+class ManageEventVisibilityUseCase {
 
     private final SaveEventPort saveEventPort;
     private final GetEventPort getEventPort;
@@ -31,6 +31,25 @@ class PublishEventUseCase {
             return Result.EVENT_ALREADY_PUBLIC;
 
         event.setType(EventType.PUBLIC);
+        saveEventPort.saveEvent(event);
+
+        return Result.SUCCESS;
+    }
+
+    public Result unpublish(String userID, long id) {
+        Optional<Event> eventOptional = getEventPort.getById(id);
+        if (eventOptional.isEmpty())
+            return Result.EVENT_NOT_FOUND;
+
+        Event event = eventOptional.get();
+
+        if (!event.getOrganizerID().equals(userID))
+            return Result.NOT_ORGANIZER;
+
+        if (event.getType().equals(EventType.PRIVATE))
+            return Result.EVENT_ALREADY_PRIVATE;
+
+        event.setType(EventType.PRIVATE);
         saveEventPort.saveEvent(event);
 
         return Result.SUCCESS;

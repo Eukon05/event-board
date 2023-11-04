@@ -18,7 +18,7 @@ public class EventFacade {
     private final DeleteEventUseCase deleteEventUseCase;
     private final InviteToEventUseCase inviteToEventUseCase;
     private final ModifyEventUseCase modifyEventUseCase;
-    private final PublishEventUseCase publishEventUseCase;
+    private final ManageEventVisibilityUseCase manageEventVisibilityUseCase;
     private final GetEventUseCase getEventUseCase;
 
     public ResultWrapper createEvent(String userID, CreateEventCommand command) {
@@ -27,7 +27,11 @@ public class EventFacade {
     }
 
     public ResultWrapper publishEvent(String userID, long eventID) {
-        return ResultWrapper.wrap(publishEventUseCase.publish(userID, eventID));
+        return ResultWrapper.wrap(manageEventVisibilityUseCase.publish(userID, eventID));
+    }
+
+    public ResultWrapper unpublishEvent(String userID, long eventID) {
+        return ResultWrapper.wrap(manageEventVisibilityUseCase.unpublish(userID, eventID));
     }
 
     public ResultWrapper attendEvent(String userID, long eventID) {
