@@ -21,11 +21,11 @@ class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body(equalTo(Result.SUCCESS.getMessage()));
+                .body("message", equalTo(Result.SUCCESS.getMessage()));
 
         utils.sendAPIGETRequest(REQUESTS_URL, tokenTwo)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body("[0]", equalTo(USER_ONE));
+                .body("data[0]", equalTo(USER_ONE));
     }
 
     @Test
@@ -36,7 +36,7 @@ class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(equalTo(Result.USER_ALREADY_FRIEND.getMessage()));
+                .body("message", equalTo(Result.USER_ALREADY_FRIEND.getMessage()));
     }
 
     @Test
@@ -45,11 +45,11 @@ class CreateFriendRequestIntegrationTests extends AbstractIntegrationTest {
 
         utils.sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_SUCCESS)
-                .body(equalTo(Result.SUCCESS.getMessage()));
+                .body("message", equalTo(Result.SUCCESS.getMessage()));
 
         utils.sendAPIPostRequest(BEFRIEND_USER_TWO_URL, tokenOne)
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(equalTo(Result.FRIEND_REQUEST_ALREADY_SENT.getMessage()));
+                .body("message", equalTo(Result.FRIEND_REQUEST_ALREADY_SENT.getMessage()));
     }
 
 }

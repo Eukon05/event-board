@@ -2,7 +2,6 @@ package pl.eukon05.eventboard.event.application.service;
 
 
 import lombok.RequiredArgsConstructor;
-import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.UseCase;
 import pl.eukon05.eventboard.event.application.port.in.command.CreateEventCommand;
 import pl.eukon05.eventboard.event.application.port.in.command.EventCommandMapper;
@@ -16,12 +15,11 @@ class CreateEventUseCase {
     private final SaveEventPort saveEventPort;
     private final EventCommandMapper mapper;
 
-    Result create(String userId, CreateEventCommand command) {
+    long create(String userId, CreateEventCommand command) {
         Event event = mapper.mapCreateCommandToDomain(command);
         event.setType(EventType.PRIVATE);
         event.setOrganizerID(userId);
 
-        saveEventPort.saveEvent(event);
-        return Result.SUCCESS;
+        return saveEventPort.saveEvent(event);
     }
 }

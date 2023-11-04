@@ -24,14 +24,14 @@ class GetEventUseCase {
     ResultWrapper getById(String userID, long eventID) {
         Optional<Event> eventOptional = getEventPort.getById(eventID);
 
-        if (eventOptional.isEmpty()) return ResultWrapper.of(Result.EVENT_NOT_FOUND);
+        if (eventOptional.isEmpty()) return ResultWrapper.wrap(Result.EVENT_NOT_FOUND);
 
         Event event = eventOptional.get();
 
         if (event.getType().equals(EventType.PRIVATE) && !event.getOrganizerID().equals(userID) && !event.getGuestIDs().contains(userID) && !event.getInviteeIDs().contains(userID))
-            return ResultWrapper.of(Result.EVENT_PRIVATE);
+            return ResultWrapper.wrap(Result.EVENT_PRIVATE);
 
-        return ResultWrapper.of(Result.SUCCESS, mapper.mapDomainToDTO(event));
+        return ResultWrapper.builder().result(Result.SUCCESS).data(mapper.mapDomainToDTO(event)).build();
     }
 
     Page<EventDTO> search(Map<String, String> parameters, Pageable pageable) {

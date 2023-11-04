@@ -2,7 +2,6 @@ package pl.eukon05.eventboard.user.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.ResultWrapper;
 import pl.eukon05.eventboard.user.application.port.in.CheckIfFriendsPort;
 
@@ -16,20 +15,20 @@ public class UserFacade implements CheckIfFriendsPort {
     private final ManageFriendRequestUseCase manageFriendRequestUseCase;
     private final GetFriendsUseCase getFriendsUseCase;
 
-    public Result createFriendRequest(String selfID, String friendID) {
-        return createFriendRequestUseCase.createFriendRequest(selfID, friendID);
+    public ResultWrapper createFriendRequest(String selfID, String friendID) {
+        return ResultWrapper.wrap(createFriendRequestUseCase.createFriendRequest(selfID, friendID));
     }
 
-    public Result acceptFriendRequest(String selfID, String friendID) {
-        return manageFriendRequestUseCase.acceptFriendRequest(selfID, friendID);
+    public ResultWrapper acceptFriendRequest(String selfID, String friendID) {
+        return ResultWrapper.wrap(manageFriendRequestUseCase.acceptFriendRequest(selfID, friendID));
     }
 
-    public Result rejectFriendRequest(String selfID, String friendID) {
-        return manageFriendRequestUseCase.rejectFriendRequest(selfID, friendID);
+    public ResultWrapper rejectFriendRequest(String selfID, String friendID) {
+        return ResultWrapper.wrap(manageFriendRequestUseCase.rejectFriendRequest(selfID, friendID));
     }
 
-    public Result removeFriend(String selfID, String friendID) {
-        return removeFriendUseCase.removeFriend(selfID, friendID);
+    public ResultWrapper removeFriend(String selfID, String friendID) {
+        return ResultWrapper.wrap(removeFriendUseCase.removeFriend(selfID, friendID));
     }
 
     @Override
