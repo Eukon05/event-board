@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.eukon05.eventboard.common.Adapter;
+import pl.eukon05.eventboard.event.application.port.out.CheckUserHostOutPort;
 import pl.eukon05.eventboard.event.application.port.out.DeleteEventPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Adapter
 @RequiredArgsConstructor
-class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEventPort {
+class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEventPort, CheckUserHostOutPort {
 
     private final EventRepository repository;
     private final EventEntityMapper mapper;
@@ -52,5 +53,10 @@ class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEven
     @Override
     public void deleteEvent(long eventID) {
         repository.deleteById(eventID);
+    }
+
+    @Override
+    public boolean checkUserHost(String userId, long eventId) {
+        return repository.existsByOrganizerIDEqualsAndIdEquals(userId, eventId);
     }
 }

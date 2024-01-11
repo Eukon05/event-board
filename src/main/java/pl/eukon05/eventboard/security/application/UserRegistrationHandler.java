@@ -4,16 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
-import pl.eukon05.eventboard.security.application.port.out.CreateUserPort;
+import pl.eukon05.eventboard.security.application.port.out.CreateUserOutPort;
 
 
 @Component
 @RequiredArgsConstructor
 class UserRegistrationHandler {
-    private final CreateUserPort createUserPort;
+    private final CreateUserOutPort createUserOutPort;
 
     @EventListener
     public void onSuccess(AuthenticationSuccessEvent success) {
-        createUserPort.createUser(success.getAuthentication().getName());
+        createUserOutPort.createUser(success.getAuthentication().getName());
     }
 }

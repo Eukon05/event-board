@@ -11,4 +11,6 @@ interface EventRepository extends JpaRepository<EventEntity, Long>, JpaSpecifica
     Page<EventEntity> findByInviteeIDsContainingOrderByIdDesc(String userID, Pageable pageable);
 
     Page<EventEntity> findByOrganizerIDOrderByIdDesc(String userID, Pageable pageable);
+
+    boolean existsByOrganizerIDEqualsAndIdEquals(String userId, long eventId);
 }

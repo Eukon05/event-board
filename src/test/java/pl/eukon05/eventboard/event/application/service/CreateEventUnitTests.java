@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 
 import static org.mockito.Mockito.verify;
-import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.userID;
+import static pl.eukon05.eventboard.event.application.service.EventUnitTestUtils.userID;
 
 class CreateEventUnitTests {
     private final SaveEventPort saveEventPort = Mockito.mock(SaveEventPort.class);
@@ -41,7 +41,6 @@ class CreateEventUnitTests {
                         EventType.PRIVATE,
                         LocalDate.now(),
                         LocalDate.now().plusDays(10),
-                        Collections.emptySet(),
                         Collections.emptySet(),
                         Collections.emptySet()
                 ));

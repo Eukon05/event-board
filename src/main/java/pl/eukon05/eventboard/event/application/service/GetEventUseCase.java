@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.ResultWrapper;
 import pl.eukon05.eventboard.common.UseCase;
+import pl.eukon05.eventboard.event.application.port.out.CheckUserInvitedOutPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.dto.EventDTO;
 import pl.eukon05.eventboard.event.application.port.out.dto.EventDTOMapper;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @UseCase
 @RequiredArgsConstructor
 class GetEventUseCase {
+    private final CheckUserInvitedOutPort checkUserInvitedOutPort;
     private final GetEventPort getEventPort;
     private final EventDTOMapper mapper;
 
@@ -28,7 +30,9 @@ class GetEventUseCase {
 
         Event event = eventOptional.get();
 
-        if (event.getType().equals(EventType.PRIVATE) && !event.getOrganizerID().equals(userID) && !event.getGuestIDs().contains(userID) && !event.getInviteeIDs().contains(userID))
+        boolean isUserInvited = checkUserInvitedOutPort.checkUserInvited(userID, eventID);
+
+        if (event.getType().equals(EventType.PRIVATE) && !event.getOrganizerID().equals(userID) && !event.getGuestIDs().contains(userID) && !isUserInvited)
             return ResultWrapper.wrap(Result.EVENT_PRIVATE);
 
         return ResultWrapper.builder().result(Result.SUCCESS).data(mapper.mapDomainToDTO(event)).build();
@@ -40,10 +44,6 @@ class GetEventUseCase {
 
     Page<EventDTO> getAttendedByUser(String userID, Pageable pageable) {
         return getEventPort.getAttendedByUser(userID, pageable).map(mapper::mapDomainToDTO);
-    }
-
-    Page<EventDTO> getInvitedForUser(String userID, Pageable pageable) {
-        return getEventPort.getInvitedForUser(userID, pageable).map(mapper::mapDomainToDTO);
     }
 
     Page<EventDTO> getOrganizedByUser(String userID, Pageable pageable) {

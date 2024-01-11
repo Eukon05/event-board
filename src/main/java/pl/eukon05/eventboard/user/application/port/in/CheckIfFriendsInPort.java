@@ -1,5 +1,5 @@
 package pl.eukon05.eventboard.user.application.port.in;
 
-public interface CheckIfFriendsPort {
+public interface CheckIfFriendsInPort {
     boolean checkIfFriends(String userOne, String userTwo);
 }

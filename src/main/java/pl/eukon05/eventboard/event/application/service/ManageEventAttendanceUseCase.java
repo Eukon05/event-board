@@ -3,6 +3,7 @@ package pl.eukon05.eventboard.event.application.service;
 import lombok.RequiredArgsConstructor;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.UseCase;
+import pl.eukon05.eventboard.event.application.port.out.CheckUserInvitedOutPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
 import pl.eukon05.eventboard.event.domain.Event;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @UseCase
 @RequiredArgsConstructor
 class ManageEventAttendanceUseCase {
+    private final CheckUserInvitedOutPort checkUserInvitedOutPort;
     private final GetEventPort getEventPort;
     private final SaveEventPort saveEventPort;
 
@@ -20,9 +22,10 @@ class ManageEventAttendanceUseCase {
 
         if (eventOptional.isEmpty()) return Result.EVENT_NOT_FOUND;
 
+        boolean isUserInvited = checkUserInvitedOutPort.checkUserInvited(userID, eventID);
         Event event = eventOptional.get();
 
-        Result result = event.attend(userID);
+        Result result = event.attend(userID, isUserInvited);
 
         if (result.equals(Result.SUCCESS)) saveEventPort.saveEvent(event);
 
@@ -37,7 +40,6 @@ class ManageEventAttendanceUseCase {
         Event event = eventOptional.get();
 
         Result result = event.unattend(userID);
-
         if (result.equals(Result.SUCCESS)) saveEventPort.saveEvent(event);
 
         return result;

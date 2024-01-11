@@ -17,7 +17,7 @@ class ManageEventVisibilityUseCase {
     private final SaveEventPort saveEventPort;
     private final GetEventPort getEventPort;
 
-    public Result publish(String userID, long id) {
+    Result publish(String userID, long id) {
         Optional<Event> eventOptional = getEventPort.getById(id);
         if (eventOptional.isEmpty())
             return Result.EVENT_NOT_FOUND;
@@ -36,7 +36,7 @@ class ManageEventVisibilityUseCase {
         return Result.SUCCESS;
     }
 
-    public Result unpublish(String userID, long id) {
+    Result unpublish(String userID, long id) {
         Optional<Event> eventOptional = getEventPort.getById(id);
         if (eventOptional.isEmpty())
             return Result.EVENT_NOT_FOUND;

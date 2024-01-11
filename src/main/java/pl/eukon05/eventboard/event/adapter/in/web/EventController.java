@@ -49,12 +49,6 @@ class EventController {
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
-    @PostMapping("/{id}/invite")
-    ResponseEntity<ResultWrapper> inviteToEvent(Principal principal, @PathVariable long id, @RequestParam String friendID) {
-        ResultWrapper result = facade.inviteToEvent(principal.getName(), friendID, id);
-        return ResponseEntity.status(result.getStatus()).body(result);
-    }
-
     @PostMapping("/{id}/attend")
     ResponseEntity<ResultWrapper> attendEvent(Principal principal, @PathVariable long id) {
         ResultWrapper result = facade.attendEvent(principal.getName(), id);
@@ -97,11 +91,6 @@ class EventController {
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
-    @GetMapping("/invited")
-    ResponseEntity<ResultWrapper> getInvited(Principal principal, @ParameterObject Pageable pageable) {
-        ResultWrapper result = facade.searchForInvited(principal.getName(), pageable);
-        return ResponseEntity.status(result.getStatus()).body(result);
-    }
 
     @GetMapping("/organized")
     ResponseEntity<ResultWrapper> getOrganized(Principal principal, @ParameterObject Pageable pageable) {

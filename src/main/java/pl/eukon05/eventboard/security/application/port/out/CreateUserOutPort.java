@@ -1,5 +1,5 @@
 package pl.eukon05.eventboard.security.application.port.out;
 
-public interface CreateUserPort {
+public interface CreateUserOutPort {
     void createUser(String id);
 }

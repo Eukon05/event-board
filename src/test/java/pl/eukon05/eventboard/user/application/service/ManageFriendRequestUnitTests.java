@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
+import static pl.eukon05.eventboard.user.application.service.UserUnitTestUtils.*;
 
 class ManageFriendRequestUnitTests {
 

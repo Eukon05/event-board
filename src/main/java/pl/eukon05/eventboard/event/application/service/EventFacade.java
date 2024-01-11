@@ -16,7 +16,6 @@ public class EventFacade {
     private final ManageEventAttendanceUseCase manageEventAttendanceUseCase;
     private final CreateEventUseCase createEventUseCase;
     private final DeleteEventUseCase deleteEventUseCase;
-    private final InviteToEventUseCase inviteToEventUseCase;
     private final ModifyEventUseCase modifyEventUseCase;
     private final ManageEventVisibilityUseCase manageEventVisibilityUseCase;
     private final GetEventUseCase getEventUseCase;
@@ -42,10 +41,6 @@ public class EventFacade {
         return ResultWrapper.wrap(manageEventAttendanceUseCase.unattend(userID, eventID));
     }
 
-    public ResultWrapper inviteToEvent(String userID, String friendID, long eventID) {
-        return ResultWrapper.wrap(inviteToEventUseCase.invite(userID, friendID, eventID));
-    }
-
     public ResultWrapper deleteEvent(String userID, long eventID) {
         return ResultWrapper.wrap(deleteEventUseCase.delete(userID, eventID));
     }
@@ -59,14 +54,6 @@ public class EventFacade {
                 .builder()
                 .result(Result.SUCCESS)
                 .data(getEventUseCase.getAttendedByUser(userID, pageable))
-                .build();
-    }
-
-    public ResultWrapper searchForInvited(String userID, Pageable pageable) {
-        return ResultWrapper
-                .builder()
-                .result(Result.SUCCESS)
-                .data(getEventUseCase.getInvitedForUser(userID, pageable))
                 .build();
     }
 
@@ -85,5 +72,4 @@ public class EventFacade {
     public ResultWrapper getEvent(String userID, long eventID) {
         return getEventUseCase.getById(userID, eventID);
     }
-
 }
