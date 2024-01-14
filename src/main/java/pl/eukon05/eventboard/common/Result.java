@@ -17,7 +17,6 @@ public enum Result {
     ALREADY_ATTENDEE(HttpStatus.BAD_REQUEST, "You already attend this event"),
     NOT_ATTENDEE(HttpStatus.BAD_REQUEST, "You are not attending this event"),
     ALREADY_INVITEE(HttpStatus.BAD_REQUEST, "The given user is already invited to the given event"),
-    NOT_INVITEE(HttpStatus.BAD_REQUEST, "You are not the recipient of this invite"),
     BEFRIEND_SELF(HttpStatus.BAD_REQUEST, "You cannot befriend yourself"),
     INVITE_SELF(HttpStatus.BAD_REQUEST, "You cannot invite yourself to an event"),
     INVITE_ORGANIZER(HttpStatus.BAD_REQUEST, "You cannot invite the organizer to their own event"),
