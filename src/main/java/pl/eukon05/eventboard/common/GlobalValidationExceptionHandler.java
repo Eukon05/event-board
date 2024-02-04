@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import static pl.eukon05.eventboard.common.ResultWrapper.NO_CONTENT;
+
 @ControllerAdvice
 final class GlobalValidationExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ResultWrapper> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ResultWrapper<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach(error -> {
@@ -22,7 +24,7 @@ final class GlobalValidationExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        ResultWrapper wrapper = ResultWrapper.builder().result(Result.VALIDATION_FAILED).details(errors).build();
+        ResultWrapper<String> wrapper = ResultWrapper.<String>builder().result(Result.VALIDATION_FAILED).data(NO_CONTENT).details(errors).build();
         return ResponseEntity.status(wrapper.getStatus()).body(wrapper);
     }
 

@@ -16,38 +16,38 @@ class UserController {
     private final UserFacade facade;
 
     @PostMapping("/{id}/befriend")
-    ResponseEntity<ResultWrapper> befriendUser(Principal principal, @PathVariable String id) {
-        ResultWrapper result = facade.createFriendRequest(principal.getName(), id);
+    ResponseEntity<ResultWrapper<String>> befriendUser(Principal principal, @PathVariable String id) {
+        ResultWrapper<String> result = facade.createFriendRequest(principal.getName(), id);
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @PostMapping("/{id}/accept")
-    ResponseEntity<ResultWrapper> acceptFriendRequest(Principal principal, @PathVariable String id) {
-        ResultWrapper result = facade.acceptFriendRequest(principal.getName(), id);
+    ResponseEntity<ResultWrapper<String>> acceptFriendRequest(Principal principal, @PathVariable String id) {
+        ResultWrapper<String> result = facade.acceptFriendRequest(principal.getName(), id);
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @PostMapping("/{id}/reject")
-    ResponseEntity<ResultWrapper> rejectFriendRequest(Principal principal, @PathVariable String id) {
-        ResultWrapper result = facade.rejectFriendRequest(principal.getName(), id);
+    ResponseEntity<ResultWrapper<String>> rejectFriendRequest(Principal principal, @PathVariable String id) {
+        ResultWrapper<String> result = facade.rejectFriendRequest(principal.getName(), id);
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @PostMapping("/{id}/defriend")
-    ResponseEntity<ResultWrapper> defriendUser(Principal principal, @PathVariable String id) {
-        ResultWrapper result = facade.removeFriend(principal.getName(), id);
+    ResponseEntity<ResultWrapper<String>> defriendUser(Principal principal, @PathVariable String id) {
+        ResultWrapper<String> result = facade.removeFriend(principal.getName(), id);
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @GetMapping("/friends")
-    ResponseEntity<ResultWrapper> getFriends(Principal principal) {
-        ResultWrapper result = facade.getFriends(principal.getName());
+    ResponseEntity<ResultWrapper<?>> getFriends(Principal principal) {
+        ResultWrapper<?> result = facade.getFriends(principal.getName());
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 
     @GetMapping("/friends/requests")
-    ResponseEntity<ResultWrapper> getFriendRequests(Principal principal) {
-        ResultWrapper result = facade.getFriendRequests(principal.getName());
+    ResponseEntity<ResultWrapper<?>> getFriendRequests(Principal principal) {
+        ResultWrapper<?> result = facade.getFriendRequests(principal.getName());
         return ResponseEntity.status(result.getStatus()).body(result);
     }
 }

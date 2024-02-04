@@ -26,7 +26,7 @@ class GetEventUnitTests {
         Event event = createTestPublicEvent();
         gettingEventWillReturn(getEventPort, event);
 
-        ResultWrapper wrapper = getEventUseCase.getById(userID, event.getId());
+        ResultWrapper<?> wrapper = getEventUseCase.getById(userID, event.getId());
         assertEquals(Result.SUCCESS, wrapper.getResult());
         verify(mapper).mapDomainToDTO(event);
     }
@@ -39,7 +39,7 @@ class GetEventUnitTests {
         checkingInvitedWillReturn(checkUserInvitedOutPort, event, false);
         gettingEventWillReturn(getEventPort, event);
 
-        ResultWrapper wrapper = getEventUseCase.getById(userID, event.getId());
+        ResultWrapper<?> wrapper = getEventUseCase.getById(userID, event.getId());
         assertEquals(Result.EVENT_PRIVATE, wrapper.getResult());
         assertEquals(Result.EVENT_PRIVATE.getMessage(), wrapper.getMessage());
     }
@@ -53,7 +53,7 @@ class GetEventUnitTests {
 
         gettingEventWillReturn(getEventPort, event);
 
-        ResultWrapper wrapper = getEventUseCase.getById(userID, event.getId());
+        ResultWrapper<?> wrapper = getEventUseCase.getById(userID, event.getId());
         assertEquals(Result.SUCCESS, wrapper.getResult());
     }
 
@@ -64,7 +64,7 @@ class GetEventUnitTests {
         event.getGuestIDs().add(userID);
         gettingEventWillReturn(getEventPort, event);
 
-        ResultWrapper wrapper = getEventUseCase.getById(userID, event.getId());
+        ResultWrapper<?> wrapper = getEventUseCase.getById(userID, event.getId());
         assertEquals(Result.SUCCESS, wrapper.getResult());
     }
 
@@ -75,7 +75,7 @@ class GetEventUnitTests {
         event.setType(EventType.PRIVATE);
         gettingEventWillReturn(getEventPort, event);
 
-        ResultWrapper wrapper = getEventUseCase.getById(userID, event.getId());
+        ResultWrapper<?> wrapper = getEventUseCase.getById(userID, event.getId());
         assertEquals(Result.SUCCESS, wrapper.getResult());
     }
 

@@ -23,7 +23,7 @@ class GetEventUseCase {
     private final GetEventPort getEventPort;
     private final EventDTOMapper mapper;
 
-    ResultWrapper getById(String userID, long eventID) {
+    ResultWrapper<?> getById(String userID, long eventID) {
         Optional<Event> eventOptional = getEventPort.getById(eventID);
 
         if (eventOptional.isEmpty()) return ResultWrapper.wrap(Result.EVENT_NOT_FOUND);
@@ -35,7 +35,7 @@ class GetEventUseCase {
         if (event.getType().equals(EventType.PRIVATE) && !event.getOrganizerID().equals(userID) && !event.getGuestIDs().contains(userID) && !isUserInvited)
             return ResultWrapper.wrap(Result.EVENT_PRIVATE);
 
-        return ResultWrapper.builder().result(Result.SUCCESS).data(mapper.mapDomainToDTO(event)).build();
+        return ResultWrapper.<EventDTO>builder().result(Result.SUCCESS).data(mapper.mapDomainToDTO(event)).build();
     }
 
     Page<EventDTO> search(Map<String, String> parameters, Pageable pageable) {

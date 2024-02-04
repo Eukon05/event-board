@@ -17,19 +17,19 @@ public class UserFacade {
     public void createUser(String id) {
         createUserUseCase.createUser(id);
     }
-    public ResultWrapper createFriendRequest(String selfID, String friendID) {
+    public ResultWrapper<String> createFriendRequest(String selfID, String friendID) {
         return ResultWrapper.wrap(createFriendRequestUseCase.createFriendRequest(selfID, friendID));
     }
 
-    public ResultWrapper acceptFriendRequest(String selfID, String friendID) {
+    public ResultWrapper<String> acceptFriendRequest(String selfID, String friendID) {
         return ResultWrapper.wrap(manageFriendRequestUseCase.acceptFriendRequest(selfID, friendID));
     }
 
-    public ResultWrapper rejectFriendRequest(String selfID, String friendID) {
+    public ResultWrapper<String> rejectFriendRequest(String selfID, String friendID) {
         return ResultWrapper.wrap(manageFriendRequestUseCase.rejectFriendRequest(selfID, friendID));
     }
 
-    public ResultWrapper removeFriend(String selfID, String friendID) {
+    public ResultWrapper<String> removeFriend(String selfID, String friendID) {
         return ResultWrapper.wrap(removeFriendUseCase.removeFriend(selfID, friendID));
     }
 
@@ -37,11 +37,11 @@ public class UserFacade {
         return checkIfFriendsUseCase.execute(userOne, userTwo);
     }
 
-    public ResultWrapper getFriends(String userID) {
+    public ResultWrapper<?> getFriends(String userID) {
         return getFriendsUseCase.getFriends(userID);
     }
 
-    public ResultWrapper getFriendRequests(String userID) {
+    public ResultWrapper<?> getFriendRequests(String userID) {
         return getFriendsUseCase.getFriendRequests(userID);
     }
 
