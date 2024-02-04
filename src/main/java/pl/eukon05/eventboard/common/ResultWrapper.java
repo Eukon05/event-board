@@ -5,21 +5,23 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @Builder
 @Getter
-public class ResultWrapper {
+public class ResultWrapper<T> {
 
     @JsonIgnore
     public static final String CREATED_RESOURCE_ID = "createdResourceID";
 
     @JsonIgnore
+    public static final String NO_CONTENT = "No content";
+
+    @JsonIgnore
     private final Result result;
 
-    private Object data;
+    private T data;
     private Map<String, String> details;
 
     //Two special getter methods for Spring to automatically convert into JSON
@@ -32,21 +34,8 @@ public class ResultWrapper {
     }
 
     //Override for the auto-generated builder
-    public static class ResultWrapperBuilder {
-        private static final String NO_CONTENT = "";
-
-        //Override for the auto-generated build method
-        public ResultWrapper build() {
-            if (details == null)
-                details = Collections.emptyMap();
-
-            if (data == null)
-                data = NO_CONTENT;
-
-            return new ResultWrapper(result, data, details);
-        }
-
-        public ResultWrapperBuilder createdResourceID(long id) {
+    public static class ResultWrapperBuilder<T> {
+        public ResultWrapperBuilder<T> createdResourceID(long id) {
             if (details == null)
                 details = new HashMap<>();
 
@@ -55,10 +44,10 @@ public class ResultWrapper {
             return this;
         }
     }
-
     //A method to easily "wrap" the Result object, when it's the only data returned by a use case
-    public static ResultWrapper wrap(Result result) {
-        return builder().result(result).build();
+    public static ResultWrapper<String> wrap(Result result) {
+        return ResultWrapper.<String>builder().result(result).data(NO_CONTENT).build();
     }
+
 
 }

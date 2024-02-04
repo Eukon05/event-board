@@ -15,7 +15,7 @@ import java.util.Set;
 class GetFriendsUseCase {
     private final GetUserPort getUserPort;
 
-    ResultWrapper getFriends(String userID) {
+    ResultWrapper<?> getFriends(String userID) {
         Optional<User> userOptional = getUserPort.getUserById(userID);
 
         if (userOptional.isEmpty()) return ResultWrapper.wrap(Result.USER_NOT_FOUND);
@@ -24,7 +24,7 @@ class GetFriendsUseCase {
         return ResultWrapper.builder().result(Result.SUCCESS).data(friendIDs).build();
     }
 
-    ResultWrapper getFriendRequests(String userID) {
+    ResultWrapper<?> getFriendRequests(String userID) {
         Optional<User> userOptional = getUserPort.getUserById(userID);
 
         if (userOptional.isEmpty()) return ResultWrapper.wrap(Result.USER_NOT_FOUND);
