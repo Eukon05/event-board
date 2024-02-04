@@ -45,7 +45,7 @@ public class EventFacade {
         return ResultWrapper.wrap(manageEventAttendanceUseCase.unattend(userID, eventID));
     }
 
-    public ResultWrapper deleteEvent(String userID, long eventID) {
+    public ResultWrapper<String> deleteEvent(String userID, long eventID) {
         return ResultWrapper.wrap(deleteEventUseCase.delete(userID, eventID));
     }
 

@@ -11,6 +11,6 @@ class NullOrNotBlankValidator implements ConstraintValidator<NullOrNotBlank, Str
     }
 
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-        return value == null || value.trim().length() > 0;
+        return value == null || !value.trim().isEmpty();
     }
 }
