@@ -14,7 +14,7 @@ I based my vision on how to implement hex. arch. on [Tom Homberg's "buckpal" pro
 - The app will only let you invite another user to an event if:
   - You are friends with the user
   - You can access the event (it's public or you are it's host / attendee)
-  - The user isn't already invited to this event (this is to prevent invite spam)
+  - The user isn't already invited to (or attending) this event (this is to prevent invite spam)
   - The user isn't the host of the event
 - Every event can be modified or deleted according to the host's will
 - User accounts cannot be deleted, because of Keycloak handling their registration for us (but don't worry, the app only keeps their Keycloak IDs in the DB to allow for the friends functionality to work)
