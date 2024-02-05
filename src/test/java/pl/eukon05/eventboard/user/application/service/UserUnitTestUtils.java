@@ -6,7 +6,7 @@ import pl.eukon05.eventboard.user.domain.User;
 
 import java.util.Optional;
 
-final class UnitTestUtils {
+final class UserUnitTestUtils {
     static User createUserOne() {
         return new User("userone");
     }

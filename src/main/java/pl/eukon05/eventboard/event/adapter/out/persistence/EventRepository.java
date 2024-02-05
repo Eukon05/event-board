@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 interface EventRepository extends JpaRepository<EventEntity, Long>, JpaSpecificationExecutor<EventEntity> {
     Page<EventEntity> findByGuestIDsContainingOrderByIdDesc(String userID, Pageable pageable);
 
-    Page<EventEntity> findByInviteeIDsContainingOrderByIdDesc(String userID, Pageable pageable);
-
     Page<EventEntity> findByOrganizerIDOrderByIdDesc(String userID, Pageable pageable);
+
+    boolean existsByOrganizerIDEqualsAndIdEquals(String userId, long eventId);
+
+    boolean existsByGuestIDsContainingAndIdEquals(String userId, long eventId);
 }

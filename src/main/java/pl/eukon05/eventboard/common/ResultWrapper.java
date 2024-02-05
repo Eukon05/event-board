@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,12 +36,23 @@ public class ResultWrapper<T> {
 
     //Override for the auto-generated builder
     public static class ResultWrapperBuilder<T> {
+        private long createdResourceID;
+
+        public ResultWrapper<T> build() {
+            if (createdResourceID > 0) {
+                if (details == null) {
+                    details = new HashMap<>();
+                }
+                details.put(CREATED_RESOURCE_ID, String.valueOf(createdResourceID));
+            } else {
+                details = Collections.emptyMap();
+            }
+
+            return new ResultWrapper<>(result, data, details);
+        }
+
         public ResultWrapperBuilder<T> createdResourceID(long id) {
-            if (details == null)
-                details = new HashMap<>();
-
-            details.put(CREATED_RESOURCE_ID, String.valueOf(id));
-
+            createdResourceID = id;
             return this;
         }
     }

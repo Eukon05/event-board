@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static pl.eukon05.eventboard.user.application.service.UnitTestUtils.*;
+import static pl.eukon05.eventboard.user.application.service.UserUnitTestUtils.*;
 
 class RemoveFriendUnitTests {
     private final SaveUserPort saveUserPort = Mockito.mock(SaveUserPort.class);

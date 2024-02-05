@@ -10,7 +10,7 @@ import pl.eukon05.eventboard.event.domain.EventType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.*;
+import static pl.eukon05.eventboard.event.application.service.EventUnitTestUtils.*;
 
 class ManageEventVisibilityUnitTests {
     private final SaveEventPort saveEventPort = Mockito.mock(SaveEventPort.class);

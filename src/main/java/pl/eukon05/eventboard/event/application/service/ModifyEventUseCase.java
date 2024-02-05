@@ -17,7 +17,7 @@ class ModifyEventUseCase {
     private final SaveEventPort saveEventPort;
     private final GetEventPort getEventPort;
 
-    public Result modify(String userID, long id, ModifyEventCommand command) {
+    Result modify(String userID, long id, ModifyEventCommand command) {
         Optional<Event> eventOptional = getEventPort.getById(id);
         if (eventOptional.isEmpty()) return Result.EVENT_NOT_FOUND;
 

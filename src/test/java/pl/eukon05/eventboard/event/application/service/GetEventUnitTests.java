@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.common.ResultWrapper;
+import pl.eukon05.eventboard.event.application.port.out.CheckUserInvitedOutPort;
 import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
 import pl.eukon05.eventboard.event.application.port.out.dto.EventDTOMapper;
 import pl.eukon05.eventboard.event.domain.Event;
@@ -11,13 +12,14 @@ import pl.eukon05.eventboard.event.domain.EventType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.*;
+import static pl.eukon05.eventboard.event.application.service.EventUnitTestUtils.*;
 
 class GetEventUnitTests {
 
     private final GetEventPort getEventPort = Mockito.mock(GetEventPort.class);
     private final EventDTOMapper mapper = Mockito.mock(EventDTOMapper.class);
-    private final GetEventUseCase getEventUseCase = new GetEventUseCase(getEventPort, mapper);
+    private final CheckUserInvitedOutPort checkUserInvitedOutPort = Mockito.mock(CheckUserInvitedOutPort.class);
+    private final GetEventUseCase getEventUseCase = new GetEventUseCase(checkUserInvitedOutPort, getEventPort, mapper);
 
     @Test
     void should_get_public_event() {
@@ -33,6 +35,8 @@ class GetEventUnitTests {
     void should_not_get_private_event() {
         Event event = createTestPublicEvent();
         event.setType(EventType.PRIVATE);
+
+        checkingInvitedWillReturn(checkUserInvitedOutPort, event, false);
         gettingEventWillReturn(getEventPort, event);
 
         ResultWrapper<?> wrapper = getEventUseCase.getById(userID, event.getId());
@@ -44,7 +48,9 @@ class GetEventUnitTests {
     void should_get_private_invited_event() {
         Event event = createTestPublicEvent();
         event.setType(EventType.PRIVATE);
-        event.getInviteeIDs().add(userID);
+
+        Mockito.when(checkUserInvitedOutPort.checkUserInvited(userID, event.getId())).thenReturn(true);
+
         gettingEventWillReturn(getEventPort, event);
 
         ResultWrapper<?> wrapper = getEventUseCase.getById(userID, event.getId());

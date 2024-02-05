@@ -8,7 +8,6 @@ import pl.eukon05.eventboard.event.domain.Event;
 public interface EventDTOMapper {
 
     @Mapping(target = "guestCount", expression = "java(domain.getGuestIDs().size())")
-    @Mapping(target = "inviteesCount", expression = "java(domain.getInviteeIDs().size())")
     @Mapping(target = "likesCount", expression = "java(domain.getLikedIDs().size())")
     EventDTO mapDomainToDTO(Event domain);
 

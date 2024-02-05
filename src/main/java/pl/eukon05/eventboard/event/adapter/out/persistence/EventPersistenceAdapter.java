@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.eukon05.eventboard.common.Adapter;
-import pl.eukon05.eventboard.event.application.port.out.DeleteEventPort;
-import pl.eukon05.eventboard.event.application.port.out.GetEventPort;
-import pl.eukon05.eventboard.event.application.port.out.SaveEventPort;
+import pl.eukon05.eventboard.event.application.port.out.*;
 import pl.eukon05.eventboard.event.domain.Event;
 
 import java.util.Map;
@@ -14,7 +12,7 @@ import java.util.Optional;
 
 @Adapter
 @RequiredArgsConstructor
-class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEventPort {
+class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEventPort, CheckUserHostOutPort, CheckUserAttendeeOutPort {
 
     private final EventRepository repository;
     private final EventEntityMapper mapper;
@@ -35,11 +33,6 @@ class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEven
     }
 
     @Override
-    public Page<Event> getInvitedForUser(String userID, Pageable pageable) {
-        return repository.findByInviteeIDsContainingOrderByIdDesc(userID, pageable).map(mapper::mapEntityToDomain);
-    }
-
-    @Override
     public Page<Event> getOrganizedByUser(String userID, Pageable pageable) {
         return repository.findByOrganizerIDOrderByIdDesc(userID, pageable).map(mapper::mapEntityToDomain);
     }
@@ -52,5 +45,15 @@ class EventPersistenceAdapter implements GetEventPort, SaveEventPort, DeleteEven
     @Override
     public void deleteEvent(long eventID) {
         repository.deleteById(eventID);
+    }
+
+    @Override
+    public boolean checkUserHost(String userId, long eventId) {
+        return repository.existsByOrganizerIDEqualsAndIdEquals(userId, eventId);
+    }
+
+    @Override
+    public boolean checkUserAttendee(String userId, long eventId) {
+        return repository.existsByGuestIDsContainingAndIdEquals(userId, eventId);
     }
 }

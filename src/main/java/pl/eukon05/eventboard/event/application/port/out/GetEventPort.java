@@ -14,7 +14,5 @@ public interface GetEventPort {
 
     Page<Event> getAttendedByUser(String userID, Pageable pageable);
 
-    Page<Event> getInvitedForUser(String userID, Pageable pageable);
-
     Page<Event> getOrganizedByUser(String userID, Pageable pageable);
 }

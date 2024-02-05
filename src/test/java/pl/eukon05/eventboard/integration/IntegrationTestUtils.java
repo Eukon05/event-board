@@ -7,7 +7,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.springframework.boot.test.context.TestComponent;
-import pl.eukon05.eventboard.user.application.port.in.CreateUserPort;
+import pl.eukon05.eventboard.user.application.port.in.CreateUserInPort;
 import pl.eukon05.eventboard.user.application.service.UserFacade;
 
 @TestComponent
@@ -17,7 +17,7 @@ public final class IntegrationTestUtils {
     private final UserFacade facade;
     private final KeycloakMock keycloakMock = new KeycloakMock(ServerConfig.aServerConfig().withNoContextPath().withPort(8180).withDefaultRealm("events").build());
 
-    private IntegrationTestUtils(CreateUserPort port, UserFacade facade) {
+    private IntegrationTestUtils(CreateUserInPort port, UserFacade facade) {
         keycloakMock.start();
         this.facade = facade;
 

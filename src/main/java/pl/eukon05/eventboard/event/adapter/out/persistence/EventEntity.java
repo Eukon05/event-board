@@ -39,8 +39,5 @@ class EventEntity {
     private Set<String> guestIDs;
 
     @ElementCollection
-    private Set<String> inviteeIDs;
-
-    @ElementCollection
     private Set<String> likedIDs;
 }

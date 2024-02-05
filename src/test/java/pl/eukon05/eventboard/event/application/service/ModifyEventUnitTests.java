@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static pl.eukon05.eventboard.event.application.service.UnitTestUtils.*;
+import static pl.eukon05.eventboard.event.application.service.EventUnitTestUtils.*;
 
 class ModifyEventUnitTests {
     private final SaveEventPort saveEventPort = Mockito.mock(SaveEventPort.class);
