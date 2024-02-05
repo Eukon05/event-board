@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import pl.eukon05.eventboard.common.Adapter;
 import pl.eukon05.eventboard.common.Result;
 import pl.eukon05.eventboard.event.application.port.in.CheckEventGettableInPort;
+import pl.eukon05.eventboard.event.application.port.in.CheckUserAttendeeInPort;
+import pl.eukon05.eventboard.event.application.port.in.CheckUserHostInPort;
 import pl.eukon05.eventboard.event.application.service.EventInAdapterFacade;
-import pl.eukon05.eventboard.invite.application.port.out.CheckUserHostOutPort;
 
 @Adapter
 @RequiredArgsConstructor
-class EventInviteInAdapter implements CheckEventGettableInPort, CheckUserHostOutPort {
+class EventInviteInAdapter implements CheckEventGettableInPort, CheckUserHostInPort, CheckUserAttendeeInPort {
     private final EventInAdapterFacade facade;
 
     @Override
@@ -20,5 +21,10 @@ class EventInviteInAdapter implements CheckEventGettableInPort, CheckUserHostOut
     @Override
     public boolean checkUserHost(String userId, long eventId) {
         return facade.checkUserHost(userId, eventId);
+    }
+
+    @Override
+    public boolean checkUserAttendee(String userId, long eventId) {
+        return facade.checkUserAttendee(userId, eventId);
     }
 }

@@ -2,10 +2,7 @@ package pl.eukon05.eventboard.invite.application.service;
 
 import org.mockito.Mockito;
 import pl.eukon05.eventboard.common.Result;
-import pl.eukon05.eventboard.invite.application.port.out.CheckEventGettableOutPort;
-import pl.eukon05.eventboard.invite.application.port.out.CheckIfFriendsOutPort;
-import pl.eukon05.eventboard.invite.application.port.out.CheckUserHostOutPort;
-import pl.eukon05.eventboard.invite.application.port.out.CheckUserInvitedOutPort;
+import pl.eukon05.eventboard.invite.application.port.out.*;
 
 final class InviteUnitTestUtils {
     static final String userID = "someid";
@@ -13,6 +10,10 @@ final class InviteUnitTestUtils {
     
     static void checkingInvitedWillReturn(CheckUserInvitedOutPort checkUserInvitedOutPort, boolean val) {
         Mockito.when(checkUserInvitedOutPort.checkUserInvited(friendID, 1L)).thenReturn(val);
+    }
+
+    static void checkingAttendeeWillReturn(CheckUserAttendeeOutPort checkUserAttendeeOutPort, boolean val) {
+        Mockito.when(checkUserAttendeeOutPort.checkUserAttendee(friendID, 1L)).thenReturn(val);
     }
 
     static void checkingFriendsWillReturn(CheckIfFriendsOutPort checkIfFriendsOutPort, boolean val) {

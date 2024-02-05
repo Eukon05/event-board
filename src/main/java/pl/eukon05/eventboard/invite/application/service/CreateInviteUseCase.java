@@ -17,6 +17,7 @@ class CreateInviteUseCase {
     private final CheckUserInvitedOutPort checkUserInvitedOutPort;
     private final CheckEventGettableOutPort checkEventGettableOutPort;
     private final CheckUserHostOutPort checkUserHostOutPort;
+    private final CheckUserAttendeeOutPort checkUserAttendeeOutPort;
 
     Result createInvite(String userId, CreateInviteCommand command) {
         if (userId.equals(command.inviteeId())) return Result.INVITE_SELF;
@@ -33,7 +34,10 @@ class CreateInviteUseCase {
             return Result.INVITE_ORGANIZER;
 
         if (checkUserInvitedOutPort.checkUserInvited(command.inviteeId(), command.eventId()))
-            return Result.ALREADY_INVITEE;
+            return Result.USER_ALREADY_INVITEE;
+
+        if (checkUserAttendeeOutPort.checkUserAttendee(command.inviteeId(), command.eventId()))
+            return Result.USER_ALREADY_ATTENDEE;
 
         Invite invite = mapper.mapCreateCommandToDomain(command);
         saveInvitePort.saveInvite(invite);

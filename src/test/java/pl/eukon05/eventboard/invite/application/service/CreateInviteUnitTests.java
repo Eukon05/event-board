@@ -17,9 +17,10 @@ class CreateInviteUnitTests {
     private final CheckUserHostOutPort checkHostPort = Mockito.mock(CheckUserHostOutPort.class);
     private final CheckUserInvitedOutPort checkInvitedPort = Mockito.mock(CheckUserInvitedOutPort.class);
     private final CheckEventGettableOutPort checkGettablePort = Mockito.mock(CheckEventGettableOutPort.class);
+    private final CheckUserAttendeeOutPort checkAttendeePort = Mockito.mock(CheckUserAttendeeOutPort.class);
     private final InviteCommandMapper mapper = Mockito.mock(InviteCommandMapper.class);
 
-    private final CreateInviteUseCase useCase = new CreateInviteUseCase(mapper, savePort, checkFriendsPort, checkInvitedPort, checkGettablePort, checkHostPort);
+    private final CreateInviteUseCase useCase = new CreateInviteUseCase(mapper, savePort, checkFriendsPort, checkInvitedPort, checkGettablePort, checkHostPort, checkAttendeePort);
     private static final CreateInviteCommand command = new CreateInviteCommand(friendID, 1L);
     private static final Invite mappingResult = new Invite(friendID, 1L);
 
@@ -29,6 +30,7 @@ class CreateInviteUnitTests {
         checkingFriendsWillReturn(checkFriendsPort, true);
         checkingInvitedWillReturn(checkInvitedPort, false);
         checkingHostWillReturn(checkHostPort, false);
+        checkingAttendeeWillReturn(checkAttendeePort, false);
         checkingGettableWillReturn(checkGettablePort, Result.SUCCESS);
 
         Result res = useCase.createInvite(userID, command);
@@ -44,6 +46,7 @@ class CreateInviteUnitTests {
         checkingFriendsWillReturn(checkFriendsPort, true);
         checkingInvitedWillReturn(checkInvitedPort, false);
         checkingHostWillReturn(checkHostPort, true);
+        checkingAttendeeWillReturn(checkAttendeePort, false);
         checkingGettableWillReturn(checkGettablePort, Result.SUCCESS);
 
         Result res = useCase.createInvite(userID, command);
@@ -56,6 +59,7 @@ class CreateInviteUnitTests {
         checkingFriendsWillReturn(checkFriendsPort, false);
         checkingInvitedWillReturn(checkInvitedPort, false);
         checkingHostWillReturn(checkHostPort, false);
+        checkingAttendeeWillReturn(checkAttendeePort, false);
         checkingGettableWillReturn(checkGettablePort, Result.SUCCESS);
 
         Result res = useCase.createInvite(userID, command);
@@ -68,10 +72,11 @@ class CreateInviteUnitTests {
         checkingFriendsWillReturn(checkFriendsPort, true);
         checkingInvitedWillReturn(checkInvitedPort, true);
         checkingHostWillReturn(checkHostPort, false);
+        checkingAttendeeWillReturn(checkAttendeePort, false);
         checkingGettableWillReturn(checkGettablePort, Result.SUCCESS);
 
         Result res = useCase.createInvite(userID, command);
-        assertEquals(Result.ALREADY_INVITEE, res);
+        assertEquals(Result.USER_ALREADY_INVITEE, res);
     }
 
     @Test
@@ -80,10 +85,11 @@ class CreateInviteUnitTests {
         checkingFriendsWillReturn(checkFriendsPort, true);
         checkingInvitedWillReturn(checkInvitedPort, false);
         checkingHostWillReturn(checkHostPort, false);
+        checkingAttendeeWillReturn(checkAttendeePort, true);
         checkingGettableWillReturn(checkGettablePort, Result.SUCCESS);
 
         Result res = useCase.createInvite(userID, command);
-        assertEquals(Result.ALREADY_ATTENDEE, res);
+        assertEquals(Result.USER_ALREADY_ATTENDEE, res);
     }
 
     @Test

@@ -9,6 +9,7 @@ import pl.eukon05.eventboard.common.Result;
 public class EventInAdapterFacade {
     private final GetEventUseCase getEventUseCase;
     private final CheckUserHostUseCase checkUserHostUseCase;
+    private final CheckUserAttendeeUseCase checkUserAttendeeUseCase;
 
     public Result checkEventGettable(String userId, long eventId) {
         return getEventUseCase.getById(userId, eventId).getResult();
@@ -16,6 +17,10 @@ public class EventInAdapterFacade {
 
     public boolean checkUserHost(String userId, long eventId) {
         return checkUserHostUseCase.checkUserHost(userId, eventId);
+    }
+
+    public boolean checkUserAttendee(String userId, long eventId) {
+        return checkUserAttendeeUseCase.checkUserAttendee(userId, eventId);
     }
 
 }
