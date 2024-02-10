@@ -24,7 +24,7 @@ class CreateEventUnitTests {
             "desc",
             LocalDate.now(),
             LocalDate.now().plusDays(10),
-            new CreateLocationCommand("country", "city", "street", "21", "30-000"));
+            new CreateLocationCommand("pl", "city", "street", "21", "30-000"));
 
     @Test
     void should_create_event() {

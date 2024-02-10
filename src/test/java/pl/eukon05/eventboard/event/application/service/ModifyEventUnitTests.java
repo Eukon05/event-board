@@ -23,7 +23,7 @@ class ModifyEventUnitTests {
     private final ModifyEventCommand command = new ModifyEventCommand(
             Optional.of("NEWNAME"),
             Optional.of("NEW_DESC"),
-            Optional.of(new ModifyLocationCommand(Optional.of("somecountry"), Optional.of("somecity"), Optional.of("somestr"), Optional.of("21e"), Optional.of("00-000"))),
+            Optional.of(new ModifyLocationCommand(Optional.of("us"), Optional.of("somecity"), Optional.of("somestr"), Optional.of("21e"), Optional.of("00-000"))),
             Optional.of(LocalDate.now()),
             Optional.of(LocalDate.now().plusDays(10)));
 

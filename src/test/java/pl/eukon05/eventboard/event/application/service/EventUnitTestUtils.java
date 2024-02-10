@@ -15,7 +15,7 @@ final class EventUnitTestUtils {
     static final String userID = "someid";
 
     static Event createTestPublicEvent() {
-        return new Event(1L, "", "name", "desc", new Location("getCountry", "getCity", "sas", "sas", "sas"), EventType.PUBLIC, LocalDate.now(), LocalDate.now().plusDays(1), new HashSet<>(), new HashSet<>());
+        return new Event(1L, "", "name", "desc", new Location("de", "getCity", "sas", "sas", "sas"), EventType.PUBLIC, LocalDate.now(), LocalDate.now().plusDays(1), new HashSet<>(), new HashSet<>());
     }
 
     static void gettingEventWillReturn(GetEventPort port, Event event) {

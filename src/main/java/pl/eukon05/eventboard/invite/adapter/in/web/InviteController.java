@@ -1,6 +1,8 @@
 package pl.eukon05.eventboard.invite.adapter.in.web;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/invite")
 @RequiredArgsConstructor
+@Tag(name = "Invite", description = "Operations related to invites")
 class InviteController {
     private final InviteFacade facade;
 
@@ -27,6 +30,7 @@ class InviteController {
 
     @DeleteMapping("/{eventId}")
     @Operation(summary = "Delete an invite", description = "Deletes an invite, if it's addressed to the current user.")
+    @Parameter(description = "ID of the event", name = "eventId", required = true, example = "1")
     ResponseEntity<ResultWrapper<String>> deleteInvite(Principal principal, @PathVariable long eventId) {
         ResultWrapper<String> result = facade.deleteInvite(principal.getName(), eventId);
         return ResponseEntity.status(result.getStatus()).body(result);

@@ -1,6 +1,7 @@
 package pl.eukon05.eventboard.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class ResultWrapper<T> {
     public static final String NO_CONTENT = "No content";
 
     @JsonIgnore
+    @Schema(hidden = true)
     private final Result result;
 
     private T data;
